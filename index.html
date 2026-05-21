@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart System</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="colors.css">
+  <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+  <canvas id="particlesCanvas"></canvas>
+
+
+  <header class="header">
+    <div class="contenedor nav">
+      <div class="logo">
+        <div class="logo-icono">🔧</div>
+        <h1><span class="azul">SMART</span><span class="verde">SYSTEM</span></h1>
+      </div>
+
+      <div class="nav-acciones">
+        <nav class="menu" id="menu">
+          <a href="#inicio">Inicio</a>
+          <a href="#servicios">Servicios</a>
+          <a href="#nosotros">Quiénes somos</a>
+          <a href="#contacto">Contacto</a>
+        </nav>
+
+        <button class="btn-login-nav" id="abrirLogin" type="button">Iniciar sesión</button>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Abrir menú">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="inicio">
+    <div class="contenedor hero-contenido">
+      <div class="hero-texto">
+        <h2>Reparación y Mantenimiento</h2>
+        <p>
+          Somos un equipo de estudiantes de Ingeniería en Sistemas.
+          Ofrecemos soluciones profesionales y accesibles para mantener tu equipo
+          en condiciones óptimas.
+        </p>
+
+        <div class="hero-botones">
+          <a href="#servicios" class="btn btn-principal">Nuestros Servicios</a>
+          <a href="#contacto" class="btn btn-secundario">Contactar Ahora</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion clara" id="servicios">
+    <div class="contenedor">
+      <div class="titulo-seccion">
+        <h2>Nuestros Servicios</h2>
+        <div class="linea"></div>
+      </div>
+
+      <div class="grid-servicios">
+        <div class="card-servicio">
+          <div class="icono">🧼</div>
+          <h3>Limpieza interna + cambio de pasta térmica</h3>
+          <p class="precio">Desde $350</p>
+          <p>Limpieza de polvo y reemplazo de pasta térmica para mejorar la disipación.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">🛠️</div>
+          <h3>Limpieza profunda</h3>
+          <p class="precio">Desde $350</p>
+          <p>Limpieza a fondo de ventiladores, disipadores, teclado y componentes.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">🎮</div>
+          <h3>Mantenimiento completo de PC gamer</h3>
+          <p class="precio">Desde $450</p>
+          <p>Limpieza profunda, cambio de pasta y optimización para gaming.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">💻</div>
+          <h3>Formateo e instalación de Windows</h3>
+          <p class="precio">Desde $350</p>
+          <p>Instalación limpia de Windows con configuraciones básicas.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">📁</div>
+          <h3>Formateo + respaldo de archivos</h3>
+          <p class="precio">Desde $450</p>
+          <p>Respaldo previo de archivos importantes y posterior instalación del sistema.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">🔧</div>
+          <h3>Reinstalación / reparación del sistema</h3>
+          <p class="precio">Desde $200</p>
+          <p>Corrección de errores de Windows sin perder tus archivos cuando es posible.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">⚡</div>
+          <h3>Optimización de Windows</h3>
+          <p class="precio">Desde $200</p>
+          <p>Limpieza de sistema, gestión de servicios y mejoras de rendimiento.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">💾</div>
+          <h3>Instalación de SSD</h3>
+          <p class="precio">Desde $200</p>
+          <p>Instalación física del SSD y configuración básica para mejorar la velocidad.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">🔄</div>
+          <h3>Migración / clonación a SSD</h3>
+          <p class="precio">Desde $450</p>
+          <p>Clonación completa del sistema al SSD para mantener tus datos.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">🧠</div>
+          <h3>Instalación / ampliación de RAM</h3>
+          <p class="precio">Desde $250</p>
+          <p>Instalación de módulos de memoria y verificación de compatibilidad.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">🔍</div>
+          <h3>Diagnóstico básico</h3>
+          <p class="precio">Desde $150</p>
+          <p>Revisión rápida para identificar fallas antes de la reparación.</p>
+        </div>
+
+        <div class="card-servicio">
+          <div class="icono">📦</div>
+          <h3>Instalación de programas</h3>
+          <p class="precio">Desde $150</p>
+          <p>Instalación y configuración de aplicaciones básicas y utilidades.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion blanca" id="nosotros">
+    <div class="contenedor">
+      <div class="titulo-seccion">
+        <h2>Quiénes Somos</h2>
+        <div class="linea"></div>
+      </div>
+
+      <p class="texto-nosotros">
+        Somos un equipo pequeño, estudiantes de Ingeniería en Sistemas con más de 3 años de experiencia
+        en proyectos de hardware y software. Nos dedicamos a mantener tu computadora en condiciones
+        óptimas de manera profesional y accesible.
+      </p>
+
+      <div class="grid-estadisticas">
+        <div class="card-estadistica">
+          <h3>Equipos reparados localmente</h3>
+          <p>Servicio cercano y personalizado.</p>
+        </div>
+
+        <div class="card-estadistica">
+          <h3>Clientes satisfechos regularmente</h3>
+          <p>Comentarios positivos de nuestra comunidad.</p>
+        </div>
+
+        <div class="card-estadistica">
+          <h3>Más de 3 años de experiencia</h3>
+          <p>En proyectos de hardware y software.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion oscura" id="contacto">
+    <div class="contenedor">
+      <div class="titulo-seccion titulo-claro">
+        <h2>Contáctanos</h2>
+        <div class="linea"></div>
+      </div>
+
+      <p class="subtexto-contacto">
+        ¿Tienes dudas? Mándanos un mensaje y te responderemos lo antes posible.
+      </p>
+
+      <div class="contacto-grid">
+        <div class="info-contacto">
+          <div class="dato">
+            <h3>Dirección</h3>
+            <p>Lázaro Cárdenas 61, Alfredo del Mazo, Naucalpan de Juárez, Méx.</p>
+          </div>
+
+          <div class="dato">
+            <h3>Teléfonos</h3>
+            <p>+52 1 56 1758 3608</p>
+            <p>+52 1 55 4635 3192</p>
+          </div>
+
+          <div class="dato">
+            <h3>Email</h3>
+            <p>SmartSystem@gmail.com</p>
+          </div>
+
+          <div class="dato">
+            <h3>Horario de Atención</h3>
+            <p>Lunes a Viernes: 10:00 - 19:00 hrs</p>
+            <p>Sábados: 12:00 - 17:00 hrs</p>
+          </div>
+        </div>
+
+        <form class="formulario" id="formulario">
+          <h3>Agenda tu cita</h3>
+
+          <label>Nombre completo</label>
+          <input type="text" placeholder="Tu nombre completo" required>
+
+          <label>Email</label>
+          <input type="email" placeholder="tu@correo.com" required>
+
+          <label>Teléfono</label>
+          <input type="text" placeholder="+52 55 1234 5678" required>
+
+          <label>Servicio solicitado</label>
+          <select id="servicioSelect" required>
+            <option value="">Selecciona un servicio</option>
+            <option value="350">Limpieza interna + cambio de pasta térmica</option>
+            <option value="350">Limpieza profunda</option>
+            <option value="450">Mantenimiento completo de PC gamer</option>
+            <option value="350">Formateo e instalación de Windows</option>
+            <option value="450">Formateo + respaldo de archivos</option>
+            <option value="200">Reinstalación / reparación del sistema</option>
+            <option value="200">Optimización de Windows</option>
+            <option value="200">Instalación de SSD</option>
+            <option value="450">Migración / clonación a SSD</option>
+            <option value="250">Instalación / ampliación de RAM</option>
+            <option value="150">Diagnóstico básico</option>
+            <option value="150">Instalación de programas</option>
+          </select>
+          <p class="ayuda-servicios">Selecciona el servicio que necesitas.</p>
+
+          <div class="resumen-servicios" id="resumenServicios">
+            <h4>Resumen de servicios</h4>
+            <p class="sin-servicios" id="sinServicios">Aún no seleccionas servicios.</p>
+            <ul id="listaServiciosSeleccionados"></ul>
+            <p class="total-servicios">Total estimado: <strong id="totalServicios">$0</strong></p>
+          </div>
+
+          <label>Marca y modelo del equipo</label>
+          <input type="text" placeholder="Ej. HP Pavilion 15">
+
+          <label>Problema que presenta</label>
+          <textarea rows="5" placeholder="Describe brevemente el problema"></textarea>
+
+          <label>Fecha en que nos puede entregar el equipo</label>
+          <input type="date">
+
+          <label>Hora aproximada de entrega</label>
+          <select>
+            <option value="">Selecciona hora</option>
+            <option>10:00 AM</option>
+            <option>12:00 PM</option>
+            <option>03:00 PM</option>
+            <option>05:00 PM</option>
+          </select>
+
+          <button type="submit" class="btn btn-principal btn-formulario">Solicitar cita</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="contenedor footer-grid">
+      <div>
+        <h3>SMART SYSTEM</h3>
+        <p>
+          Somos un equipo pequeño de estudiantes de Ingeniería en Sistemas.
+          Ofrecemos servicios profesionales y accesibles de reparación,
+          mantenimiento y upgrades para tu computadora.
+        </p>
+      </div>
+
+      <div>
+        <h3>Enlaces Rápidos</h3>
+        <ul>
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#nosotros">Quiénes Somos</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-login" id="modalLogin" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tituloLogin">
+    <div class="login-panel">
+      <button class="cerrar-login" id="cerrarLogin" type="button" aria-label="Cerrar inicio de sesión">×</button>
+      <h3 id="tituloLogin">Inicia sesión para tu cita</h3>
+      <p>Accede para dar seguimiento a tus solicitudes y agendar más rápido.</p>
+
+      <div class="login-tabs" role="tablist" aria-label="Opciones de acceso">
+        <button type="button" class="tab-login activo" id="tabLogin" role="tab" aria-selected="true">Iniciar sesión</button>
+        <button type="button" class="tab-login" id="tabRegistro" role="tab" aria-selected="false">Registrarse</button>
+      </div>
+
+      <form id="formLogin" class="form-login">
+        <label for="usuarioLogin">Correo o usuario</label>
+        <input id="usuarioLogin" type="text" placeholder="tu@correo.com" required>
+
+        <label for="passwordLogin">Contraseña</label>
+        <input id="passwordLogin" type="password" placeholder="********" required>
+
+        <button type="submit" class="btn btn-principal">Entrar</button>
+      </form>
+
+      <form id="formRegistro" class="form-login oculto-formulario" aria-hidden="true">
+        <label for="nombreRegistro">Nombre completo</label>
+        <input id="nombreRegistro" type="text" placeholder="Tu nombre" required>
+
+        <label for="correoRegistro">Correo electrónico</label>
+        <input id="correoRegistro" type="email" placeholder="tu@correo.com" required>
+
+        <label for="passwordRegistro">Contraseña</label>
+        <input id="passwordRegistro" type="password" placeholder="Crea una contraseña" required>
+
+        <button type="submit" class="btn btn-principal">Crear cuenta</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
