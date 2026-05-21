@@ -1,3 +1,9 @@
+// Configuración real de tu proyecto en Supabase
+const SUPABASE_URL = 'https://pohrgobetrcvcbvodjcz.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_secret_Ad-nh4W_vgTMRb6PEJiFZA_Y_JQyumu';
+
+// Inicializar la conexión
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const menuBtn = document.getElementById("menuBtn");
 const menu = document.getElementById("menu");
 const formulario = document.getElementById("formulario");

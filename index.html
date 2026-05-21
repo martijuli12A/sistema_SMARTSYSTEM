@@ -15,7 +15,6 @@
 <body>
   <canvas id="particlesCanvas"></canvas>
 
-
   <header class="header">
     <div class="contenedor nav">
       <div class="logo">
@@ -221,16 +220,16 @@
         <form class="formulario" id="formulario">
           <h3>Agenda tu cita</h3>
 
-          <label>Nombre completo</label>
-          <input type="text" placeholder="Tu nombre completo" required>
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" placeholder="Tu nombre completo" required>
 
-          <label>Email</label>
-          <input type="email" placeholder="tu@correo.com" required>
+          <label for="correo">Email</label>
+          <input type="email" id="correo" placeholder="tu@correo.com" required>
 
-          <label>Teléfono</label>
-          <input type="text" placeholder="+52 55 1234 5678" required>
+          <label for="telefono">Teléfono</label>
+          <input type="text" id="telefono" placeholder="+52 55 1234 5678" required>
 
-          <label>Servicio solicitado</label>
+          <label for="servicioSelect">Servicio solicitado</label>
           <select id="servicioSelect" required>
             <option value="">Selecciona un servicio</option>
             <option value="350">Limpieza interna + cambio de pasta térmica</option>
@@ -255,17 +254,17 @@
             <p class="total-servicios">Total estimado: <strong id="totalServicios">$0</strong></p>
           </div>
 
-          <label>Marca y modelo del equipo</label>
-          <input type="text" placeholder="Ej. HP Pavilion 15">
+          <label for="modelo">Marca y modelo del equipo</label>
+          <input type="text" id="modelo" placeholder="Ej. HP Pavilion 15">
 
-          <label>Problema que presenta</label>
-          <textarea rows="5" placeholder="Describe brevemente el problema"></textarea>
+          <label for="falla">Problema que presenta</label>
+          <textarea id="falla" rows="5" placeholder="Describe brevemente el problema"></textarea>
 
-          <label>Fecha en que nos puede entregar el equipo</label>
-          <input type="date">
+          <label for="fechaEntrega">Fecha en que nos puede entregar el equipo</label>
+          <input type="date" id="fechaEntrega">
 
-          <label>Hora aproximada de entrega</label>
-          <select>
+          <label for="horaEntrega">Hora aproximada de entrega</label>
+          <select id="horaEntrega">
             <option value="">Selecciona hora</option>
             <option>10:00 AM</option>
             <option>12:00 PM</option>
@@ -300,7 +299,7 @@
         </ul>
       </div>
     </div>
-  </footer>
+  </footer >
 
   <div class="modal-login" id="modalLogin" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tituloLogin">
     <div class="login-panel">
@@ -339,6 +338,9 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script src="script.js"></script>
 </body>
 </html>
