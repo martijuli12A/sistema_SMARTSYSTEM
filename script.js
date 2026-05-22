@@ -1,9 +1,15 @@
-// Configuración real de tu proyecto en Supabase
+// ==========================================
+// CONFIGURACIÓN GLOBAL DE SUPABASE
+// ==========================================
 const SUPABASE_URL = 'https://pohrgobetrcvcbvodjcz.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_secret_Ad-nh4W_vgTMRb6PEJiFZA_Y_JQyumu';
+const SUPABASE_ANON_KEY = 'sb_publishable_VSRamaBp4uh9SSYhRSVwRg_9f0_sgOy'; 
 
-// Inicializar la conexión
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// CORRECCIÓN: Usamos un nombre diferente (supabaseClient) para no chocar con la librería
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ==========================================
+// SELECTORES DE ELEMENTOS DEL DOM
+// ==========================================
 const menuBtn = document.getElementById("menuBtn");
 const menu = document.getElementById("menu");
 const formulario = document.getElementById("formulario");
@@ -31,6 +37,9 @@ const PARTICLE_CONFIG = {
   colors: ['#0cd7f2', '#7edfff', '#12a5d0', '#06b3d4']
 };
 
+// ==========================================
+// LÓGICA DEL RESUMEN DE COTIZACIÓN (FRONTEND)
+// ==========================================
 function actualizarResumenServicios() {
   if (!servicioSelect || !listaServiciosSeleccionados || !totalServicios || !sinServicios) {
     return;
@@ -54,6 +63,98 @@ function actualizarResumenServicios() {
   totalServicios.textContent = `$${total}`;
 }
 
+if (servicioSelect) {
+  servicioSelect.addEventListener("change", actualizarResumenServicios);
+  actualizarResumenServicios();
+}
+
+// ==========================================
+// ENVÍO DE FORMULARIO A LA BASE DE DATOS
+// ==========================================
+if (formulario) {
+  formulario.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Captura de datos ingresados
+    const nombre = document.getElementById("nombre")?.value.trim();
+    const correo = document.getElementById("correo")?.value.trim();
+    const telefono = document.getElementById("telefono")?.value.trim();
+    const modelo = document.getElementById("modelo")?.value.trim() || "No especificado";
+    const falla = document.getElementById("falla")?.value.trim() || "Sin descripción";
+    const fechaEntrega = document.getElementById("fechaEntrega")?.value;
+    const horaEntrega = document.getElementById("horaEntrega")?.value || "No especificada";
+
+    // Cálculo y recolección de servicios seleccionados
+    const serviciosElegidos = Array.from(servicioSelect.selectedOptions).filter((opt) => opt.value);
+    let total = 0;
+    let nombresServicios = [];
+
+    serviciosElegidos.forEach((servicio) => {
+      total += Number(servicio.value) || 0;
+      nombresServicios.push(servicio.text);
+    });
+
+    const serviciosTexto = nombresServicios.join(", ") || "Ninguno seleccionado";
+
+    try {
+      // 1. Generamos un "Folio" corto aleatorio (ej. #A7B2X)
+      const folioGenerado = Math.random().toString(36).substring(2, 7).toUpperCase();
+
+      const { data, error } = await supabaseClient
+        .from('appointments')
+        .insert([
+          {
+            client_name: nombre,
+            client_email: correo,
+            client_phone: telefono,
+            device_info: modelo,
+            issue_description: falla,
+            dropoff_date: fechaEntrega ? fechaEntrega : null,
+            dropoff_time: horaEntrega,
+            services_requested: serviciosTexto,
+            status: 'Pendiente'
+          }
+        ]);
+
+      if (error) throw error;
+
+      // 2. Alerta de éxito con el Folio
+      alert(`¡Cita registrada con éxito en Smart System!\nTu número de folio es: #${folioGenerado}\nTotal Estimado: $${total} MXN.`);
+      
+      // 3. UX: Le preguntamos al usuario si quiere usar WhatsApp (No invasivo)
+      const quiereWhatsapp = confirm("¿Te gustaría enviar esta cotización por WhatsApp al taller para agilizar tu atención?");
+      
+      if (quiereWhatsapp) {
+        // Capturamos el número dinámico desde el HTML
+        const selectorSucursal = document.getElementById("sucursalSelect");
+        const numeroTallerDinamico = selectorSucursal.value; 
+
+        // Armamos el mensaje predeterminado
+        const mensajeWa = `Hola Smart System, acabo de agendar una cita.\n*Folio:* #${folioGenerado}\n*Equipo:* ${modelo}\n*Falla:* ${falla}\n*Servicios:* ${serviciosTexto}\n*Total Estimado:* $${total}`;
+        
+        // El link se arma con la sucursal elegida
+        const urlWa = `https://wa.me/${numeroTallerDinamico}?text=${encodeURIComponent(mensajeWa)}`;
+        
+        // Abrimos WhatsApp en una nueva pestaña
+        window.open(urlWa, '_blank');
+      }
+
+      // 4. Limpiamos el formulario
+      formulario.reset();
+      if (typeof actualizarResumenServicios === "function") {
+        actualizarResumenServicios();
+      }
+
+    } catch (error) {
+      console.error("Error al guardar en Supabase:", error);
+      alert(`Hubo un detalle al conectar con la base de datos: ${error.message}`);
+    }
+  });
+}
+
+// ==========================================
+// CONTROL DE MENÚ DE NAVEGACIÓN
+// ==========================================
 if (menuBtn && menu) {
   menuBtn.addEventListener("click", () => {
     menu.classList.toggle("activo");
@@ -68,24 +169,13 @@ document.querySelectorAll(".menu a").forEach(enlace => {
   });
 });
 
-if (formulario) {
-  formulario.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const total = totalServicios ? totalServicios.textContent : "$0";
-    alert(`Tu solicitud fue enviada de forma visual. Total estimado: ${total}. Después se puede conectar a Firebase o PHP.`);
-  });
-}
-
-if (servicioSelect) {
-  servicioSelect.addEventListener("change", actualizarResumenServicios);
-  actualizarResumenServicios();
-}
-
+// ==========================================
+// CONTROL DE MODAL DE INICIO DE SESIÓN
+// ==========================================
 function abrirModalLogin() {
   if (!modalLogin) {
     return;
   }
-
   modalLogin.classList.add("activo");
   modalLogin.setAttribute("aria-hidden", "false");
 }
@@ -114,7 +204,6 @@ function cerrarModalLogin() {
   if (!modalLogin) {
     return;
   }
-
   modalLogin.classList.remove("activo");
   modalLogin.setAttribute("aria-hidden", "true");
 }
@@ -156,82 +245,117 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-if (formLogin) {
-  formLogin.addEventListener("submit", (event) => {
-    event.preventDefault();
+// ==========================================
+// AUTENTICACIÓN REAL CON SUPABASE (REGISTRO Y LOGIN)
+// ==========================================
 
-    const usuario = usuarioLogin && usuarioLogin.value ? usuarioLogin.value.trim() : "cliente";
-    const alias = usuario.includes("@") ? usuario.split("@")[0] : usuario;
-
-    if (abrirLogin) {
-      abrirLogin.textContent = `Hola, ${alias}`;
-      abrirLogin.classList.add("logueado");
-    }
-
-    alert(`Bienvenido, ${alias}. Inicio de sesión visual completado.`);
-    formLogin.reset();
-    cerrarModalLogin();
-
-    if (contacto) {
-      setTimeout(() => {
-        contacto.scrollIntoView({ behavior: "smooth" });
-
-        const primerCampoCita = formulario
-          ? formulario.querySelector("input, select, textarea")
-          : null;
-
-        if (primerCampoCita && typeof primerCampoCita.focus === "function") {
-          primerCampoCita.focus();
-        }
-      }, 120);
-    }
-  });
-}
-
+// --- REGISTRO REAL ---
 if (formRegistro) {
-  formRegistro.addEventListener("submit", (event) => {
+  formRegistro.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const nombre = nombreRegistro && nombreRegistro.value ? nombreRegistro.value.trim() : "cliente";
+    const nombre = nombreRegistro.value.trim();
+    const correo = document.getElementById("correoRegistro").value.trim();
+    const password = document.getElementById("passwordRegistro").value;
     const alias = nombre.split(" ")[0] || "cliente";
 
-    if (abrirLogin) {
-      abrirLogin.textContent = `Hola, ${alias}`;
-      abrirLogin.classList.add("logueado");
-    }
-
-    alert(`Registro completado. Bienvenido, ${alias}.`);
-    formRegistro.reset();
-    mostrarVistaAcceso("login");
-    cerrarModalLogin();
-
-    if (contacto) {
-      setTimeout(() => {
-        contacto.scrollIntoView({ behavior: "smooth" });
-
-        const primerCampoCita = formulario
-          ? formulario.querySelector("input, select, textarea")
-          : null;
-
-        if (primerCampoCita && typeof primerCampoCita.focus === "function") {
-          primerCampoCita.focus();
+    try {
+      // Registrar al usuario en la base de datos
+      const { data, error } = await supabaseClient.auth.signUp({
+        email: correo,
+        password: password,
+        options: {
+          data: { full_name: nombre } // Guardamos el nombre en los metadatos
         }
-      }, 120);
+      });
+
+      if (error) throw error;
+
+      alert(`¡Registro exitoso! Ahora puedes iniciar sesión, ${alias}.`);
+      formRegistro.reset();
+      mostrarVistaAcceso("login"); // Lo pasamos directo a la pestaña de inicio de sesión
+
+    } catch (error) {
+      console.error("Error en el registro:", error);
+      alert(`No se pudo registrar: ${error.message}`);
     }
   });
 }
 
+// --- INICIO DE SESIÓN REAL (CON REDIRECCIÓN INTELIGENTE) ---
+if (formLogin) {
+  formLogin.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const correo = usuarioLogin.value.trim();
+    const password = document.getElementById("passwordLogin").value;
+
+    try {
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: correo,
+        password: password,
+      });
+
+      if (error) throw error;
+
+      // 1. Consultar el rol real en la tabla profiles para ver quién entró
+      const { data: perfil, error: perfilError } = await supabaseClient
+        .from('profiles')
+        .select('role, full_name')
+        .eq('id', data.user.id)
+        .single();
+
+      if (perfilError) throw perfilError;
+
+      const alias = perfil?.full_name?.split(" ")[0] || correo.split("@")[0];
+      const rol = perfil?.role || 'cliente';
+
+      alert(`¡Autenticación exitosa! Bienvenido de nuevo, ${alias}.`);
+      formLogin.reset();
+      cerrarModalLogin();
+
+      // 2. Transformación inteligente del botón de navegación
+      if (abrirLogin) {
+        if (rol === 'admin' || rol === 'gerente') {
+          // Si es administrador, convertimos el botón en un acceso directo al panel
+          abrirLogin.innerHTML = `⚙️ Panel Admin`;
+          abrirLogin.classList.add("logueado");
+          
+          // Cambiamos el comportamiento para que al darle clic lo redireccione
+          abrirLogin.addEventListener("click", (e) => {
+            e.preventDefault();
+            window.location.href = 'admin.html';
+          });
+        } else {
+          // Si es un cliente común, solo lo saludamos de forma visual
+          abrirLogin.textContent = `Hola, ${alias}`;
+          abrirLogin.classList.add("logueado");
+          
+          if (contacto) {
+            setTimeout(() => {
+              contacto.scrollIntoView({ behavior: "smooth" });
+            }, 300);
+          }
+        }
+      }
+
+    } catch (error) {
+      console.error("Error en inicio de sesión:", error);
+      alert(`Credenciales incorrectas o error de perfil: ${error.message}`);
+    }
+  });
+}
+
+// ==========================================
+// FONDO DINÁMICO DE PARTÍCULAS (CANVAS 2D)
+// ==========================================
 class ParticleSystem {
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
-    if (!this.canvas) {
-      return;
-    }
+    if (!this.canvas) return;
 
     this.ctx = this.canvas.getContext('2d');
-    if (!this.ctx) {
-      return;
-    }
+    if (!this.ctx) return;
 
     this.particles = [];
     this.particleCount = 0;
@@ -251,10 +375,7 @@ class ParticleSystem {
 
   init() {
     this.particles = [];
-    
-    this.particleCount = window.innerWidth < 768
-      ? PARTICLE_CONFIG.mobileCount
-      : PARTICLE_CONFIG.desktopCount;
+    this.particleCount = window.innerWidth < 768 ? PARTICLE_CONFIG.mobileCount : PARTICLE_CONFIG.desktopCount;
     
     for (let i = 0; i < this.particleCount; i++) {
       this.particles.push({

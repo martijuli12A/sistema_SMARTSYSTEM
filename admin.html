@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración - Smart System</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="colors.css">
+  <link rel="stylesheet" href="Style.css">
+
+  <style>
+    .admin-container {
+      margin-top: 60px;
+      margin-bottom: 60px;
+      min-height: 60vh;
+    }
+    .citas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .cita-card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(8,38,63,0.08);
+      border-left: 6px solid var(--azul-principal);
+    }
+    .cita-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--gris-claro);
+      padding-bottom: 10px;
+    }
+    .cita-header h3 {
+      color: var(--azul-oscuro);
+      font-size: 18px;
+    }
+    .estado-badge {
+        
+      background: #fff3cd;
+      color: #856404;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .estado-select {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      outline: none;
+    }
+    .estado-select:focus {
+      border-color: var(--azul-principal);
+    }
+
+    .cita-card p {
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #4c6879;
+    }
+    .cita-card strong {
+      color: var(--texto-principal);
+    }
+  </style>
+</head>
+<body style="background: var(--fondo-general);">
+
+  <header class="header">
+    <div class="contenedor nav">
+      <div class="logo">
+        <div class="logo-icono">🔒</div>
+        <h1><span class="azul">SMART</span><span class="verde">ADMIN</span></h1>
+      </div>
+      <div class="nav-acciones">
+        <button class="btn-login-nav" id="btnCerrarSesion" type="button">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="contenedor admin-container">
+    <div class="titulo-seccion">
+      <h2>Gestión de Citas</h2>
+      <div class="linea"></div>
+    </div>
+
+    <div id="contenedorCitas" class="citas-grid">
+      <p>Verificando seguridad y cargando citas...</p>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

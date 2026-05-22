@@ -218,6 +218,19 @@
         </div>
 
         <form class="formulario" id="formulario">
+          <div class="alerta-local">
+      <span>📍</span>
+      <p><strong>Aviso de cobertura:</strong> Nuestro servicio de reparación y mantenimiento opera exclusivamente a nivel local en Huixquilucan y zonas aledañas. No realizamos recepciones ni envíos nacionales.</p>
+    </div>
+
+    <div class="input-group">
+      <label for="sucursalSelect">¿En qué sucursal deseas ser atendido?</label>
+      <select id="sucursalSelect" required>
+        <option value="" disabled selected>Selecciona tu sucursal más cercana...</option>
+        <option value="525535501052">Sucursal Huixquilucan Centro</option>
+        <option value="525500000002">Sucursal Interlomas</option>
+      </select>
+    </div>
           <h3>Agenda tu cita</h3>
 
           <label for="nombre">Nombre completo</label>
@@ -299,7 +312,7 @@
         </ul>
       </div>
     </div>
-  </footer >
+  </footer>
 
   <div class="modal-login" id="modalLogin" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tituloLogin">
     <div class="login-panel">
@@ -338,9 +351,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script src="script.js"></script>
 </body>
 </html>
