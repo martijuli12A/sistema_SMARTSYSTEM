@@ -31,6 +31,8 @@
         </nav>
 
         <button class="btn-login-nav" id="abrirLogin" type="button">Iniciar sesión</button>
+        <!-- NUEVO BOTÓN DE CERRAR SESIÓN (Oculto por defecto) -->
+        <button class="btn-login-nav oculto-formulario" id="btnCerrarSesion" type="button" style="border-color: #ff4d4d; color: #ff4d4d; margin-left: 8px;">Cerrar sesión</button>
         <button class="menu-btn" id="menuBtn" type="button" aria-label="Abrir menú">☰</button>
       </div>
     </div>
@@ -219,28 +221,31 @@
 
         <form class="formulario" id="formulario">
           <div class="alerta-local">
-      <span>📍</span>
-      <p><strong>Aviso de cobertura:</strong> Nuestro servicio de reparación y mantenimiento opera exclusivamente a nivel local en Huixquilucan y zonas aledañas. No realizamos recepciones ni envíos nacionales.</p>
-    </div>
+            <span>📍</span>
+            <p><strong>Aviso de cobertura:</strong> Nuestro servicio de reparación y mantenimiento opera exclusivamente a nivel local en Huixquilucan y zonas aledañas. No realizamos recepciones ni envíos nacionales.</p>
+          </div>
 
-    <div class="input-group">
-      <label for="sucursalSelect">¿En qué sucursal deseas ser atendido?</label>
-      <select id="sucursalSelect" required>
-        <option value="" disabled selected>Selecciona tu sucursal más cercana...</option>
-        <option value="525535501052">Sucursal Huixquilucan Centro</option>
-        <option value="525500000002">Sucursal Interlomas</option>
-      </select>
-    </div>
+          <div class="input-group">
+            <label for="sucursalSelect">¿En qué sucursal deseas ser atendido?</label>
+            <select id="sucursalSelect" required>
+              <option value="" disabled selected>Selecciona tu sucursal más cercana...</option>
+              <option value="525535501052">Sucursal Huixquilucan Centro</option>
+              <option value="525500000002">Sucursal Interlomas</option>
+            </select>
+          </div>
+          
           <h3>Agenda tu cita</h3>
 
           <label for="nombre">Nombre completo</label>
           <input type="text" id="nombre" placeholder="Tu nombre completo" required>
 
+          <!-- VALIDACIÓN DE CORREO -->
           <label for="correo">Email</label>
-          <input type="email" id="correo" placeholder="tu@correo.com" required>
+          <input type="email" id="correo" placeholder="tu@correo.com" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Ingresa un correo válido" required>
 
-          <label for="telefono">Teléfono</label>
-          <input type="text" id="telefono" placeholder="+52 55 1234 5678" required>
+          <!-- VALIDACIÓN DE WHATSAPP (10 DÍGITOS) -->
+          <label for="telefono">Teléfono (WhatsApp)</label>
+          <input type="tel" id="telefono" placeholder="10 dígitos (Ej. 5512345678)" pattern="[0-9]{10}" title="Debe contener exactamente 10 números" maxlength="10" required>
 
           <label for="servicioSelect">Servicio solicitado</label>
           <select id="servicioSelect" required>
@@ -274,15 +279,15 @@
           <textarea id="falla" rows="5" placeholder="Describe brevemente el problema"></textarea>
 
           <label for="fechaEntrega">Fecha en que nos puede entregar el equipo</label>
-          <input type="date" id="fechaEntrega">
+          <input type="date" id="fechaEntrega" required>
 
           <label for="horaEntrega">Hora aproximada de entrega</label>
-          <select id="horaEntrega">
+          <select id="horaEntrega" required>
             <option value="">Selecciona hora</option>
-            <option>10:00 AM</option>
-            <option>12:00 PM</option>
-            <option>03:00 PM</option>
-            <option>05:00 PM</option>
+            <option value="10:00 AM">10:00 AM</option>
+            <option value="12:00 PM">12:00 PM</option>
+            <option value="03:00 PM">03:00 PM</option>
+            <option value="05:00 PM">05:00 PM</option>
           </select>
 
           <button type="submit" class="btn btn-principal btn-formulario">Solicitar cita</button>
@@ -309,11 +314,25 @@
           <li><a href="#servicios">Servicios</a></li>
           <li><a href="#nosotros">Quiénes Somos</a></li>
           <li><a href="#contacto">Contacto</a></li>
+          <!-- ENLACE DE POLÍTICAS DE PRIVACIDAD -->
+          <li><a href="#" id="abrirPoliticas">Políticas de Privacidad</a></li>
         </ul>
       </div>
     </div>
   </footer>
 
+  <!-- MODAL DE POLÍTICAS DE SEGURIDAD -->
+  <div class="modal-login" id="modalPoliticas" aria-hidden="true">
+    <div class="login-panel" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+      <button class="cerrar-login" id="cerrarPoliticas" type="button" aria-label="Cerrar">×</button>
+      <h3 style="margin-bottom: 15px; color: var(--azul-principal);">Políticas de Seguridad y Protección al Usuario</h3>
+      <p style="margin-bottom: 10px;"><strong>1. Protección de Datos:</strong> En Smart System, la información personal recopilada (correo, número de WhatsApp y nombre) es encriptada y almacenada de forma segura en servidores de alto nivel. Solo se utiliza para el seguimiento y gestión de citas.</p>
+      <p style="margin-bottom: 10px;"><strong>2. Uso de WhatsApp:</strong> Al proporcionar su número a 10 dígitos, el cliente autoriza a Smart System a enviar notificaciones operativas referentes exclusivamente al estado, diagnóstico y entrega de su equipo de cómputo.</p>
+      <p><strong>3. Integridad del Hardware y Software:</strong> Nuestro equipo de ingenieros se compromete a mantener intacta la integridad de los componentes e información del cliente. Ninguna pieza o archivo será modificado, eliminado o sustituido sin el consentimiento explícito previo del propietario.</p>
+    </div>
+  </div>
+
+  <!-- MODAL DE LOGIN -->
   <div class="modal-login" id="modalLogin" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tituloLogin">
     <div class="login-panel">
       <button class="cerrar-login" id="cerrarLogin" type="button" aria-label="Cerrar inicio de sesión">×</button>

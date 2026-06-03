@@ -4,7 +4,6 @@
 const SUPABASE_URL = 'https://pohrgobetrcvcbvodjcz.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_VSRamaBp4uh9SSYhRSVwRg_9f0_sgOy'; 
 
-// CORRECCIÓN: Usamos un nombre diferente (supabaseClient) para no chocar con la librería
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ==========================================
@@ -28,6 +27,24 @@ const servicioSelect = document.getElementById("servicioSelect");
 const listaServiciosSeleccionados = document.getElementById("listaServiciosSeleccionados");
 const totalServicios = document.getElementById("totalServicios");
 const sinServicios = document.getElementById("sinServicios");
+
+// Nuevos selectores (Sesión, Políticas y Calendario)
+const btnCerrarSesion = document.getElementById("btnCerrarSesion");
+const modalPoliticas = document.getElementById("modalPoliticas");
+const btnAbrirPoliticas = document.getElementById("abrirPoliticas");
+const btnCerrarPoliticas = document.getElementById("cerrarPoliticas");
+const fechaEntregaInput = document.getElementById("fechaEntrega");
+
+// ==========================================
+// CONFIGURACIÓN DE CALENDARIO (Bloquear días pasados)
+// ==========================================
+if(fechaEntregaInput){
+  const hoy = new Date();
+  const year = hoy.getFullYear();
+  const month = String(hoy.getMonth() + 1).padStart(2, '0');
+  const day = String(hoy.getDate()).padStart(2, '0');
+  fechaEntregaInput.min = `${year}-${month}-${day}`; 
+}
 
 const PARTICLE_CONFIG = {
   mobileCount: 60,
@@ -81,8 +98,26 @@ if (formulario) {
     const telefono = document.getElementById("telefono")?.value.trim();
     const modelo = document.getElementById("modelo")?.value.trim() || "No especificado";
     const falla = document.getElementById("falla")?.value.trim() || "Sin descripción";
-    const fechaEntrega = document.getElementById("fechaEntrega")?.value;
+    const fechaEntrega = fechaEntregaInput?.value;
     const horaEntrega = document.getElementById("horaEntrega")?.value || "No especificada";
+
+    // --- VALIDACIÓN DE INCONGRUENCIA DE TIEMPO ---
+    if (fechaEntrega === fechaEntregaInput.min && horaEntrega) {
+      const horaActual = new Date().getHours();
+      let horaCita = 0;
+
+      // Convertir la hora seleccionada a formato de 24 hrs para comparar
+      if (horaEntrega.includes("10:00")) horaCita = 10;
+      if (horaEntrega.includes("12:00")) horaCita = 12;
+      if (horaEntrega.includes("03:00")) horaCita = 15;
+      if (horaEntrega.includes("05:00")) horaCita = 17;
+
+      if (horaCita > 0 && horaCita <= horaActual) {
+        alert("⏱️ ¡Incongruencia de horario!\n\nNo puedes agendar una cita en una hora que ya pasó el día de hoy. Por favor, selecciona un horario posterior o cambia la fecha de entrega.");
+        return; // Detiene el envío a la base de datos
+      }
+    }
+    // ---------------------------------------------
 
     // Cálculo y recolección de servicios seleccionados
     const serviciosElegidos = Array.from(servicioSelect.selectedOptions).filter((opt) => opt.value);
@@ -241,7 +276,11 @@ if (modalLogin) {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    cerrarModalLogin();
+    if (modalLogin && modalLogin.classList.contains("activo")) cerrarModalLogin();
+    if (modalPoliticas && modalPoliticas.classList.contains("activo")) {
+      modalPoliticas.classList.remove("activo");
+      modalPoliticas.setAttribute("aria-hidden", "true");
+    }
   }
 });
 
@@ -265,7 +304,7 @@ if (formRegistro) {
         email: correo,
         password: password,
         options: {
-          data: { full_name: nombre } // Guardamos el nombre en los metadatos
+          data: { full_name: nombre } 
         }
       });
 
@@ -273,7 +312,7 @@ if (formRegistro) {
 
       alert(`¡Registro exitoso! Ahora puedes iniciar sesión, ${alias}.`);
       formRegistro.reset();
-      mostrarVistaAcceso("login"); // Lo pasamos directo a la pestaña de inicio de sesión
+      mostrarVistaAcceso("login"); 
 
     } catch (error) {
       console.error("Error en el registro:", error);
@@ -298,7 +337,7 @@ if (formLogin) {
 
       if (error) throw error;
 
-      // 1. Consultar el rol real en la tabla profiles para ver quién entró
+      // Consultar el rol real en la tabla profiles
       const { data: perfil, error: perfilError } = await supabaseClient
         .from('profiles')
         .select('role, full_name')
@@ -314,35 +353,64 @@ if (formLogin) {
       formLogin.reset();
       cerrarModalLogin();
 
-      // 2. Transformación inteligente del botón de navegación
+      // Transformación inteligente del botón de navegación
       if (abrirLogin) {
         if (rol === 'admin' || rol === 'gerente') {
-          // Si es administrador, convertimos el botón en un acceso directo al panel
           abrirLogin.innerHTML = `⚙️ Panel Admin`;
           abrirLogin.classList.add("logueado");
-          
-          // Cambiamos el comportamiento para que al darle clic lo redireccione
           abrirLogin.addEventListener("click", (e) => {
             e.preventDefault();
             window.location.href = 'admin.html';
           });
         } else {
-          // Si es un cliente común, solo lo saludamos de forma visual
           abrirLogin.textContent = `Hola, ${alias}`;
           abrirLogin.classList.add("logueado");
-          
           if (contacto) {
             setTimeout(() => {
               contacto.scrollIntoView({ behavior: "smooth" });
             }, 300);
           }
         }
+        
+        // Mostrar el botón de cerrar sesión
+        if(btnCerrarSesion) btnCerrarSesion.classList.remove("oculto-formulario");
       }
 
     } catch (error) {
       console.error("Error en inicio de sesión:", error);
       alert(`Credenciales incorrectas o error de perfil: ${error.message}`);
     }
+  });
+}
+
+// ==========================================
+// CERRAR SESIÓN Y POLÍTICAS DE PRIVACIDAD
+// ==========================================
+
+if (btnCerrarSesion) {
+  btnCerrarSesion.addEventListener("click", async () => {
+    try {
+      await supabaseClient.auth.signOut();
+      alert("Has cerrado sesión exitosamente.");
+      window.location.reload(); 
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  });
+}
+
+if (btnAbrirPoliticas && modalPoliticas) {
+  btnAbrirPoliticas.addEventListener("click", (e) => {
+    e.preventDefault();
+    modalPoliticas.classList.add("activo");
+    modalPoliticas.setAttribute("aria-hidden", "false");
+  });
+}
+
+if (btnCerrarPoliticas && modalPoliticas) {
+  btnCerrarPoliticas.addEventListener("click", () => {
+    modalPoliticas.classList.remove("activo");
+    modalPoliticas.setAttribute("aria-hidden", "true");
   });
 }
 
