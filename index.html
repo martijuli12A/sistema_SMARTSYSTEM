@@ -31,7 +31,6 @@
         </nav>
 
         <button class="btn-login-nav" id="abrirLogin" type="button">Iniciar sesión</button>
-        <!-- NUEVO BOTÓN DE CERRAR SESIÓN (Oculto por defecto) -->
         <button class="btn-login-nav oculto-formulario" id="btnCerrarSesion" type="button" style="border-color: #ff4d4d; color: #ff4d4d; margin-left: 8px;">Cerrar sesión</button>
         <button class="menu-btn" id="menuBtn" type="button" aria-label="Abrir menú">☰</button>
       </div>
@@ -239,11 +238,9 @@
           <label for="nombre">Nombre completo</label>
           <input type="text" id="nombre" placeholder="Tu nombre completo" required>
 
-          <!-- VALIDACIÓN DE CORREO -->
           <label for="correo">Email</label>
-          <input type="email" id="correo" placeholder="tu@correo.com" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Ingresa un correo válido" required>
+          <input type="email" id="correo" placeholder="Ej. usuario@gmail.com" pattern="^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com|outlook\.com|yahoo\.com|huixquilucan\.tecnm\.mx)$" title="Por favor usa un correo válido (gmail, hotmail, outlook, yahoo o huixquilucan.tecnm.mx)" required>
 
-          <!-- VALIDACIÓN DE WHATSAPP (10 DÍGITOS) -->
           <label for="telefono">Teléfono (WhatsApp)</label>
           <input type="tel" id="telefono" placeholder="10 dígitos (Ej. 5512345678)" pattern="[0-9]{10}" title="Debe contener exactamente 10 números" maxlength="10" required>
 
@@ -314,14 +311,12 @@
           <li><a href="#servicios">Servicios</a></li>
           <li><a href="#nosotros">Quiénes Somos</a></li>
           <li><a href="#contacto">Contacto</a></li>
-          <!-- ENLACE DE POLÍTICAS DE PRIVACIDAD -->
           <li><a href="#" id="abrirPoliticas">Políticas de Privacidad</a></li>
         </ul>
       </div>
     </div>
   </footer>
 
-  <!-- MODAL DE POLÍTICAS DE SEGURIDAD -->
   <div class="modal-login" id="modalPoliticas" aria-hidden="true">
     <div class="login-panel" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
       <button class="cerrar-login" id="cerrarPoliticas" type="button" aria-label="Cerrar">×</button>
@@ -332,7 +327,6 @@
     </div>
   </div>
 
-  <!-- MODAL DE LOGIN -->
   <div class="modal-login" id="modalLogin" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tituloLogin">
     <div class="login-panel">
       <button class="cerrar-login" id="cerrarLogin" type="button" aria-label="Cerrar inicio de sesión">×</button>
@@ -345,8 +339,8 @@
       </div>
 
       <form id="formLogin" class="form-login">
-        <label for="usuarioLogin">Correo o usuario</label>
-        <input id="usuarioLogin" type="text" placeholder="tu@correo.com" required>
+        <label for="usuarioLogin">Correo electrónico</label>
+        <input id="usuarioLogin" type="email" placeholder="tu@correo.com" required>
 
         <label for="passwordLogin">Contraseña</label>
         <input id="passwordLogin" type="password" placeholder="********" required>
@@ -356,13 +350,16 @@
 
       <form id="formRegistro" class="form-login oculto-formulario" aria-hidden="true">
         <label for="nombreRegistro">Nombre completo</label>
-        <input id="nombreRegistro" type="text" placeholder="Tu nombre" required>
+        <input id="nombreRegistro" type="text" placeholder="Tu nombre completo" required>
 
         <label for="correoRegistro">Correo electrónico</label>
-        <input id="correoRegistro" type="email" placeholder="tu@correo.com" required>
+        <input id="correoRegistro" type="email" placeholder="Ej. usuario@gmail.com" pattern="^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com|outlook\.com|yahoo\.com|huixquilucan\.tecnm\.mx)$" title="Por favor usa un correo válido (gmail, hotmail, outlook, yahoo o huixquilucan.tecnm.mx)" required>
+
+        <label for="telefonoRegistro">Teléfono (WhatsApp)</label>
+        <input id="telefonoRegistro" type="tel" placeholder="10 dígitos (Ej. 5512345678)" pattern="[0-9]{10}" title="Debe contener exactamente 10 números" maxlength="10" required>
 
         <label for="passwordRegistro">Contraseña</label>
-        <input id="passwordRegistro" type="password" placeholder="Crea una contraseña" required>
+        <input id="passwordRegistro" type="password" placeholder="Crea una contraseña segura" required>
 
         <button type="submit" class="btn btn-principal">Crear cuenta</button>
       </form>

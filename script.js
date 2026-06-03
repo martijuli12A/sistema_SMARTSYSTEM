@@ -288,35 +288,62 @@ document.addEventListener("keydown", (event) => {
 // AUTENTICACIÓN REAL CON SUPABASE (REGISTRO Y LOGIN)
 // ==========================================
 
-// --- REGISTRO REAL ---
+// --- REGISTRO REAL (CON VERIFICACIÓN DE CORREO Y WHATSAPP) ---
 if (formRegistro) {
   formRegistro.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const nombre = nombreRegistro.value.trim();
     const correo = document.getElementById("correoRegistro").value.trim();
+    const telefono = document.getElementById("telefonoRegistro").value.trim(); 
     const password = document.getElementById("passwordRegistro").value;
     const alias = nombre.split(" ")[0] || "cliente";
 
     try {
-      // Registrar al usuario en la base de datos
+      // 1. Mostrar estado de carga para UX
+      const btnSubmit = formRegistro.querySelector("button[type='submit']");
+      const textoOriginal = btnSubmit.textContent;
+      btnSubmit.textContent = "Procesando...";
+      btnSubmit.disabled = true;
+
+      // 2. Registrar al usuario en Supabase (Incluye el teléfono)
       const { data, error } = await supabaseClient.auth.signUp({
         email: correo,
         password: password,
         options: {
-          data: { full_name: nombre } 
+          data: { 
+            full_name: nombre,
+            phone: telefono 
+          } 
         }
       });
 
+      // 3. Restaurar botón
+      btnSubmit.textContent = textoOriginal;
+      btnSubmit.disabled = false;
+
       if (error) throw error;
 
-      alert(`¡Registro exitoso! Ahora puedes iniciar sesión, ${alias}.`);
+      // 4. ALERTA DE VERIFICACIÓN DE CORREO
+      alert(`¡Casi listo, ${alias}!\n\nHemos enviado un correo de confirmación a: ${correo}.\n\nPor favor, revisa tu bandeja de entrada (o la carpeta de Spam) y haz clic en el enlace para activar tu cuenta. No podrás iniciar sesión hasta que lo verifiques.`);
+      
       formRegistro.reset();
       mostrarVistaAcceso("login"); 
 
     } catch (error) {
       console.error("Error en el registro:", error);
-      alert(`No se pudo registrar: ${error.message}`);
+      
+      // Manejo de errores amigable
+      let mensajeError = "No se pudo registrar. Intenta de nuevo.";
+      if (error.message.includes("User already registered")) {
+        mensajeError = "Este correo ya está registrado. Si no has verificado tu cuenta, revisa tu bandeja de entrada.";
+      }
+      
+      alert(mensajeError);
+      
+      const btnSubmit = formRegistro.querySelector("button[type='submit']");
+      btnSubmit.textContent = "Crear cuenta";
+      btnSubmit.disabled = false;
     }
   });
 }
@@ -335,6 +362,7 @@ if (formLogin) {
         password: password,
       });
 
+      // Si el correo no ha sido verificado, Supabase lanzará un error aquí
       if (error) throw error;
 
       // Consultar el rol real en la tabla profiles
@@ -378,7 +406,11 @@ if (formLogin) {
 
     } catch (error) {
       console.error("Error en inicio de sesión:", error);
-      alert(`Credenciales incorrectas o error de perfil: ${error.message}`);
+      let mensajeError = "Credenciales incorrectas.";
+      if (error.message.toLowerCase().includes("email not confirmed")) {
+        mensajeError = "Debes verificar tu correo electrónico antes de iniciar sesión. Por favor, revisa tu bandeja de entrada.";
+      }
+      alert(mensajeError);
     }
   });
 }
