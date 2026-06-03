@@ -543,7 +543,7 @@ ul{
 .footer p,
 .footer a,
 .footer li{
-  saa
+  
   color: var(--gris-texto-claro);
 }
 
@@ -763,4 +763,18 @@ ul{
     animation: none !important;
     transition: none !important;
   }
+}
+/* Ajustes para el nuevo logo de imagen */
+.logo-img {
+  height: 45px; /* Puedes subir o bajar este número si lo quieres más grande o pequeño */
+  width: auto;
+  object-fit: contain;
+  margin-right: 12px;
+  border-radius: 8px; /* Le da un toque suave a las esquinas de la imagen */
+}
+
+/* Asegura que la imagen y el texto queden centrados horizontalmente */
+.logo {
+  display: flex;
+  align-items: center;
 }
