@@ -11,6 +11,41 @@
 
   <link rel="stylesheet" href="colors.css">
   <link rel="stylesheet" href="Style.css">
+  
+  <style>
+    /* Estilos para la selección múltiple de servicios */
+    .checkbox-group {
+      max-height: 180px;
+      overflow-y: auto;
+      border: 1px solid var(--borde);
+      border-radius: 10px;
+      padding: 12px;
+      background: #ffffff;
+      margin-bottom: 10px;
+    }
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      font-weight: 500;
+      margin: 8px 0;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--azul-oscuro);
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+      margin-right: 12px;
+      cursor: pointer;
+      transform: scale(1.1);
+    }
+    .checkbox-group::-webkit-scrollbar {
+      width: 8px;
+    }
+    .checkbox-group::-webkit-scrollbar-thumb {
+      background: rgba(12,183,242,0.4);
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
   <canvas id="particlesCanvas"></canvas>
@@ -67,84 +102,61 @@
           <div class="icono">🧼</div>
           <h3>Limpieza interna + cambio de pasta térmica</h3>
           <p class="precio">Desde $350</p>
-          <p>Limpieza de polvo y reemplazo de pasta térmica para mejorar la disipación.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">🛠️</div>
           <h3>Limpieza profunda</h3>
           <p class="precio">Desde $350</p>
-          <p>Limpieza a fondo de ventiladores, disipadores, teclado y componentes.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">🎮</div>
           <h3>Mantenimiento completo de PC gamer</h3>
           <p class="precio">Desde $450</p>
-          <p>Limpieza profunda, cambio de pasta y optimización para gaming.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">💻</div>
           <h3>Formateo e instalación de Windows</h3>
           <p class="precio">Desde $350</p>
-          <p>Instalación limpia de Windows con configuraciones básicas.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">📁</div>
           <h3>Formateo + respaldo de archivos</h3>
           <p class="precio">Desde $450</p>
-          <p>Respaldo previo de archivos importantes y posterior instalación del sistema.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">🔧</div>
           <h3>Reinstalación / reparación del sistema</h3>
           <p class="precio">Desde $200</p>
-          <p>Corrección de errores de Windows sin perder tus archivos cuando es posible.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">⚡</div>
           <h3>Optimización de Windows</h3>
           <p class="precio">Desde $200</p>
-          <p>Limpieza de sistema, gestión de servicios y mejoras de rendimiento.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">💾</div>
           <h3>Instalación de SSD</h3>
           <p class="precio">Desde $200</p>
-          <p>Instalación física del SSD y configuración básica para mejorar la velocidad.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">🔄</div>
           <h3>Migración / clonación a SSD</h3>
           <p class="precio">Desde $450</p>
-          <p>Clonación completa del sistema al SSD para mantener tus datos.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">🧠</div>
           <h3>Instalación / ampliación de RAM</h3>
           <p class="precio">Desde $250</p>
-          <p>Instalación de módulos de memoria y verificación de compatibilidad.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">🔍</div>
           <h3>Diagnóstico básico</h3>
           <p class="precio">Desde $150</p>
-          <p>Revisión rápida para identificar fallas antes de la reparación.</p>
         </div>
-
         <div class="card-servicio">
           <div class="icono">📦</div>
           <h3>Instalación de programas</h3>
           <p class="precio">Desde $150</p>
-          <p>Instalación y configuración de aplicaciones básicas y utilidades.</p>
         </div>
       </div>
     </div>
@@ -168,12 +180,10 @@
           <h3>Equipos reparados localmente</h3>
           <p>Servicio cercano y personalizado.</p>
         </div>
-
         <div class="card-estadistica">
           <h3>Clientes satisfechos regularmente</h3>
           <p>Comentarios positivos de nuestra comunidad.</p>
         </div>
-
         <div class="card-estadistica">
           <h3>Más de 3 años de experiencia</h3>
           <p>En proyectos de hardware y software.</p>
@@ -199,18 +209,15 @@
             <h3>Dirección</h3>
             <p>Lázaro Cárdenas 61, Alfredo del Mazo, Naucalpan de Juárez, Méx.</p>
           </div>
-
           <div class="dato">
             <h3>Teléfonos</h3>
             <p>+52 1 56 1758 3608</p>
             <p>+52 1 55 4635 3192</p>
           </div>
-
           <div class="dato">
             <h3>Email</h3>
             <p>SmartSystem@gmail.com</p>
           </div>
-
           <div class="dato">
             <h3>Horario de Atención</h3>
             <p>Lunes a Viernes: 10:00 - 19:00 hrs</p>
@@ -239,28 +246,27 @@
           <input type="text" id="nombre" placeholder="Tu nombre completo" required>
 
           <label for="correo">Email</label>
-          <input type="email" id="correo" placeholder="Ej. usuario@gmail.com" pattern="^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com|outlook\.com|yahoo\.com|huixquilucan\.tecnm\.mx)$" title="Por favor usa un correo válido (gmail, hotmail, outlook, yahoo o huixquilucan.tecnm.mx)" required>
+          <input type="email" id="correo" placeholder="Ej. usuario@gmail.com" pattern="^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com|outlook\.com|yahoo\.com|huixquilucan\.tecnm\.mx)$" title="Por favor usa un correo válido" required>
 
           <label for="telefono">Teléfono (WhatsApp)</label>
           <input type="tel" id="telefono" placeholder="10 dígitos (Ej. 5512345678)" pattern="[0-9]{10}" title="Debe contener exactamente 10 números" maxlength="10" required>
 
-          <label for="servicioSelect">Servicio solicitado</label>
-          <select id="servicioSelect" required>
-            <option value="">Selecciona un servicio</option>
-            <option value="350">Limpieza interna + cambio de pasta térmica</option>
-            <option value="350">Limpieza profunda</option>
-            <option value="450">Mantenimiento completo de PC gamer</option>
-            <option value="350">Formateo e instalación de Windows</option>
-            <option value="450">Formateo + respaldo de archivos</option>
-            <option value="200">Reinstalación / reparación del sistema</option>
-            <option value="200">Optimización de Windows</option>
-            <option value="200">Instalación de SSD</option>
-            <option value="450">Migración / clonación a SSD</option>
-            <option value="250">Instalación / ampliación de RAM</option>
-            <option value="150">Diagnóstico básico</option>
-            <option value="150">Instalación de programas</option>
-          </select>
-          <p class="ayuda-servicios">Selecciona el servicio que necesitas.</p>
+          <label>Servicios solicitados (Puedes elegir varios)</label>
+          <div class="checkbox-group" id="grupoServicios">
+            <label><input type="checkbox" value="350" data-nombre="Limpieza interna + cambio de pasta térmica"> Limpieza interna + cambio de pasta térmica</label>
+            <label><input type="checkbox" value="350" data-nombre="Limpieza profunda"> Limpieza profunda</label>
+            <label><input type="checkbox" value="450" data-nombre="Mantenimiento completo de PC gamer"> Mantenimiento completo de PC gamer</label>
+            <label><input type="checkbox" value="350" data-nombre="Formateo e instalación de Windows"> Formateo e instalación de Windows</label>
+            <label><input type="checkbox" value="450" data-nombre="Formateo + respaldo de archivos"> Formateo + respaldo de archivos</label>
+            <label><input type="checkbox" value="200" data-nombre="Reinstalación / reparación del sistema"> Reinstalación / reparación del sistema</label>
+            <label><input type="checkbox" value="200" data-nombre="Optimización de Windows"> Optimización de Windows</label>
+            <label><input type="checkbox" value="200" data-nombre="Instalación de SSD"> Instalación de SSD</label>
+            <label><input type="checkbox" value="450" data-nombre="Migración / clonación a SSD"> Migración / clonación a SSD</label>
+            <label><input type="checkbox" value="250" data-nombre="Instalación / ampliación de RAM"> Instalación / ampliación de RAM</label>
+            <label><input type="checkbox" value="150" data-nombre="Diagnóstico básico"> Diagnóstico básico</label>
+            <label><input type="checkbox" value="150" data-nombre="Instalación de programas"> Instalación de programas</label>
+          </div>
+          <p class="ayuda-servicios" id="alertaServicios" style="color: #ff4d4d; display: none;">Por favor selecciona al menos un servicio.</p>
 
           <div class="resumen-servicios" id="resumenServicios">
             <h4>Resumen de servicios</h4>
@@ -297,19 +303,13 @@
     <div class="contenedor footer-grid">
       <div>
         <h3>SMART SYSTEM</h3>
-        <p>
-          Somos un equipo pequeño de estudiantes de Ingeniería en Sistemas.
-          Ofrecemos servicios profesionales y accesibles de reparación,
-          mantenimiento y upgrades para tu computadora.
-        </p>
+        <p>Somos un equipo pequeño de estudiantes de Ingeniería en Sistemas. Ofrecemos servicios profesionales y accesibles para tu computadora.</p>
       </div>
-
       <div>
         <h3>Enlaces Rápidos</h3>
         <ul>
           <li><a href="#inicio">Inicio</a></li>
           <li><a href="#servicios">Servicios</a></li>
-          <li><a href="#nosotros">Quiénes Somos</a></li>
           <li><a href="#contacto">Contacto</a></li>
           <li><a href="#" id="abrirPoliticas">Políticas de Privacidad</a></li>
         </ul>
@@ -321,21 +321,23 @@
     <div class="login-panel" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
       <button class="cerrar-login" id="cerrarPoliticas" type="button" aria-label="Cerrar">×</button>
       <h3 style="margin-bottom: 15px; color: var(--azul-principal);">Políticas de Seguridad y Protección al Usuario</h3>
-      <p style="margin-bottom: 10px;"><strong>1. Protección de Datos:</strong> En Smart System, la información personal recopilada (correo, número de WhatsApp y nombre) es encriptada y almacenada de forma segura en servidores de alto nivel. Solo se utiliza para el seguimiento y gestión de citas.</p>
-      <p style="margin-bottom: 10px;"><strong>2. Uso de WhatsApp:</strong> Al proporcionar su número a 10 dígitos, el cliente autoriza a Smart System a enviar notificaciones operativas referentes exclusivamente al estado, diagnóstico y entrega de su equipo de cómputo.</p>
-      <p><strong>3. Integridad del Hardware y Software:</strong> Nuestro equipo de ingenieros se compromete a mantener intacta la integridad de los componentes e información del cliente. Ninguna pieza o archivo será modificado, eliminado o sustituido sin el consentimiento explícito previo del propietario.</p>
+      <p style="margin-bottom: 10px;"><strong>1. Protección de Datos:</strong> En Smart System, la información personal es encriptada y almacenada de forma segura.</p>
+      <p style="margin-bottom: 10px;"><strong>2. Uso de WhatsApp:</strong> Al proporcionar su número, el cliente autoriza notificaciones referentes exclusivamente a su equipo.</p>
+      <p><strong>3. Integridad de Software:</strong> Nos comprometemos a mantener intacta la información del cliente. Ningún archivo será modificado sin consentimiento.</p>
+      
+      <button type="button" class="btn btn-secundario" id="btnCerrarPoliticasAbajo" style="width: 100%; margin-top: 20px;">Cerrar ventana</button>
     </div>
   </div>
 
-  <div class="modal-login" id="modalLogin" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tituloLogin">
+  <div class="modal-login" id="modalLogin" aria-hidden="true">
     <div class="login-panel">
       <button class="cerrar-login" id="cerrarLogin" type="button" aria-label="Cerrar inicio de sesión">×</button>
       <h3 id="tituloLogin">Inicia sesión para tu cita</h3>
       <p>Accede para dar seguimiento a tus solicitudes y agendar más rápido.</p>
 
-      <div class="login-tabs" role="tablist" aria-label="Opciones de acceso">
-        <button type="button" class="tab-login activo" id="tabLogin" role="tab" aria-selected="true">Iniciar sesión</button>
-        <button type="button" class="tab-login" id="tabRegistro" role="tab" aria-selected="false">Registrarse</button>
+      <div class="login-tabs">
+        <button type="button" class="tab-login activo" id="tabLogin">Iniciar sesión</button>
+        <button type="button" class="tab-login" id="tabRegistro">Registrarse</button>
       </div>
 
       <form id="formLogin" class="form-login">
@@ -353,16 +355,18 @@
         <input id="nombreRegistro" type="text" placeholder="Tu nombre completo" required>
 
         <label for="correoRegistro">Correo electrónico</label>
-        <input id="correoRegistro" type="email" placeholder="Ej. usuario@gmail.com" pattern="^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com|outlook\.com|yahoo\.com|huixquilucan\.tecnm\.mx)$" title="Por favor usa un correo válido (gmail, hotmail, outlook, yahoo o huixquilucan.tecnm.mx)" required>
+        <input id="correoRegistro" type="email" placeholder="Ej. usuario@gmail.com" required>
 
         <label for="telefonoRegistro">Teléfono (WhatsApp)</label>
-        <input id="telefonoRegistro" type="tel" placeholder="10 dígitos (Ej. 5512345678)" pattern="[0-9]{10}" title="Debe contener exactamente 10 números" maxlength="10" required>
+        <input id="telefonoRegistro" type="tel" placeholder="10 dígitos" required>
 
         <label for="passwordRegistro">Contraseña</label>
         <input id="passwordRegistro" type="password" placeholder="Crea una contraseña segura" required>
 
         <button type="submit" class="btn btn-principal">Crear cuenta</button>
       </form>
+      
+      <button type="button" class="btn btn-secundario" id="btnCerrarLoginAbajo" style="width: 100%; margin-top: 15px;">Cancelar / Cerrar</button>
     </div>
   </div>
 
