@@ -68,6 +68,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     // 1. Llenamos el formulario de contacto automáticamente
     autoLlenarFormulario(perfil?.full_name, user.email, telefono);
+    // Dispara el radar de encuestas cuando el cliente inicia sesión
+    verificarCitasPorCalificar(user.email);
     
     // 2. Modificamos el botón de navegación
     if (abrirLogin) {
@@ -415,3 +417,196 @@ class ParticleSystem {
 }
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => new ParticleSystem("particlesCanvas"));
 else new ParticleSystem("particlesCanvas");
+
+// ==========================================
+// SISTEMA DE CALIFICACIÓN Y SATISFACCIÓN (NPS)
+// ==========================================
+let idCitaACalificar = null;
+let valorEstrellas = 0;
+
+async function verificarCitasPorCalificar(emailUsuario) {
+  // Busca si el usuario tiene una cita "Reparada" a la que aún no le haya dado Rating
+  const { data, error } = await supabaseClient
+    .from('appointments')
+    .select('id')
+    .eq('client_email', emailUsuario)
+    .eq('status', 'Reparado')
+    .is('rating', null)
+    .limit(1);
+
+  if (data && data.length > 0) {
+    idCitaACalificar = data[0].id;
+    // Si la encuentra, lanza la ventana emergente al cliente
+    const modalRating = document.getElementById("modalRating");
+    if(modalRating) {
+      modalRating.classList.add("activo");
+      modalRating.setAttribute("aria-hidden", "false");
+    }
+  }
+}
+
+// Interacción visual de las estrellas
+const estrellas = document.querySelectorAll('.estrella');
+estrellas.forEach(estrella => {
+  estrella.addEventListener('click', (e) => {
+    valorEstrellas = parseInt(e.target.dataset.valor);
+    estrellas.forEach(s => {
+      if (parseInt(s.dataset.valor) <= valorEstrellas) {
+        s.style.color = '#fbbf24'; // Color Dorado
+      } else {
+        s.style.color = '#cbd5e1'; // Color Gris
+      }
+    });
+  });
+});
+
+// Enviar a la base de datos
+const btnEnviarRating = document.getElementById("btnEnviarRating");
+if(btnEnviarRating) {
+  btnEnviarRating.addEventListener("click", async () => {
+    if (valorEstrellas === 0) {
+      alert("Por favor, selecciona al menos una estrella para calificarnos.");
+      return;
+    }
+
+    const btn = btnEnviarRating;
+    btn.textContent = "Enviando...";
+    btn.disabled = true;
+
+    const comentario = document.getElementById("feedbackText").value.trim();
+
+    const { error } = await supabaseClient
+      .from('appointments')
+      .update({ rating: valorEstrellas, feedback: comentario })
+      .eq('id', idCitaACalificar);
+
+    if (error) {
+      alert("Hubo un error al guardar tu calificación: " + error.message);
+      btn.textContent = "Enviar Calificación";
+      btn.disabled = false;
+    } else {
+      alert("¡Muchas gracias por ayudarnos a mejorar, tu opinión es muy valiosa!");
+      document.getElementById("modalRating").classList.remove("activo");
+      document.getElementById("modalRating").setAttribute("aria-hidden", "true");
+    }
+  });
+}
+
+// Botón para cerrar la ventana sin calificar
+const cerrarRating = document.getElementById("cerrarRating");
+if(cerrarRating) {
+  cerrarRating.addEventListener("click", () => {
+    document.getElementById("modalRating").classList.remove("activo");
+    document.getElementById("modalRating").setAttribute("aria-hidden", "true");
+  });
+}
+
+// ==========================================
+// LÓGICA DEL TRIAGE MÉDICO IA (SIMULACIÓN)
+// ==========================================
+const btnAbrirIA = document.getElementById("btnAbrirIA");
+const btnCerrarIA = document.getElementById("btnCerrarIA");
+const chatIA = document.getElementById("chatIA");
+const chatIABody = document.getElementById("chatIABody");
+const inputMensajeIA = document.getElementById("inputMensajeIA");
+
+if (btnAbrirIA && chatIA) {
+  btnAbrirIA.addEventListener("click", () => chatIA.classList.add("activo"));
+  btnCerrarIA.addEventListener("click", () => chatIA.classList.remove("activo"));
+}
+
+window.enviarMensajeIA = function() {
+  const mensaje = inputMensajeIA.value.trim();
+  if (mensaje === "") return;
+
+  // 1. Mostrar mensaje del usuario
+  agregarMensajeAlChat(mensaje, "usuario");
+  inputMensajeIA.value = "";
+
+  // 2. Mostrar indicador de "Escribiendo..."
+  const escribiendo = document.createElement("div");
+  escribiendo.className = "mensaje-ia ia escribiendo";
+  escribiendo.id = "indicadorEscribiendo";
+  escribiendo.textContent = "Analizando síntomas...";
+  chatIABody.appendChild(escribiendo);
+  scrollChatIA();
+
+  // 3. Simular tiempo de procesamiento de IA (1.5 segundos)
+  setTimeout(() => {
+    document.getElementById("indicadorEscribiendo").remove();
+    const diagnostico = procesarDiagnosticoIA(mensaje.toLowerCase());
+    agregarMensajeAlChat(diagnostico, "ia");
+  }, 1500);
+}
+
+function agregarMensajeAlChat(texto, emisor) {
+  const div = document.createElement("div");
+  div.className = `mensaje-ia ${emisor}`;
+  div.innerHTML = texto;
+  chatIABody.appendChild(div);
+  scrollChatIA();
+}
+
+function scrollChatIA() {
+  chatIABody.scrollTop = chatIABody.scrollHeight;
+}
+
+// ------------------------------------------
+// MOTOR DE REGLAS (EL "CEREBRO" EXPANDIDO DE LA IA)
+// ------------------------------------------
+function procesarDiagnosticoIA(texto) {
+  // 1. Lentitud y Rendimiento
+  if (texto.includes("lenta") || texto.includes("traba") || texto.includes("congela") || texto.includes("tarda") || texto.includes("lag")) {
+    return "<strong>Diagnóstico Preliminar:</strong> Posible cuello de botella en almacenamiento o memoria RAM saturada.<br><br><strong>Recomendación:</strong> Te sugiero el servicio de <em>'Instalación de SSD'</em> o <em>'Ampliación de RAM'</em>. Si ya cuentas con SSD, una <em>'Optimización de Windows'</em> lo solucionará. ¿Deseas agendar tu cita abajo?";
+  } 
+  
+  // 2. Sobrecalentamiento (Crítico)
+  else if (texto.includes("calienta") || texto.includes("apaga") || texto.includes("ruido") || texto.includes("ventilador") || texto.includes("quema") || texto.includes("herviendo")) {
+    return "<strong>Diagnóstico Preliminar:</strong> Problema de disipación térmica. Peligro inminente de daño en el procesador (Thermal Throttling).<br><br><strong>Recomendación:</strong> Es vital realizar una <em>'Limpieza interna + cambio de pasta térmica'</em>. Por favor, deja de usar el equipo en tareas pesadas y agenda el servicio.";
+  } 
+  
+  // 3. Fallas de Sistema Operativo y Virus
+  else if (texto.includes("pantalla azul") || texto.includes("reinicia") || texto.includes("error") || texto.includes("virus") || texto.includes("hacker") || texto.includes("publicidad") || texto.includes("lento el internet")) {
+    return "<strong>Diagnóstico Preliminar:</strong> Falla crítica del sistema operativo, corrupción de archivos o infección de malware/virus.<br><br><strong>Recomendación:</strong> Necesitamos aplicar una <em>'Reparación del Sistema'</em>. Si la infección es grave, lo ideal es un <em>'Formateo + respaldo de archivos'</em> para dejarla como nueva sin perder tu información.";
+  } 
+  
+  // 4. Hardware Crítico (No da video / No enciende)
+  else if (texto.includes("prende") || texto.includes("enciende") || texto.includes("video") || texto.includes("pantalla negra") || texto.includes("pitidos")) {
+    return "<strong>Diagnóstico Preliminar:</strong> Falla a nivel de hardware (Puede ser la fuente de poder, un módulo RAM dañado o falla en la Tarjeta Madre).<br><br><strong>Recomendación:</strong> Este problema requiere revisión física con multímetro. Por favor agenda un <em>'Diagnóstico básico'</em> en nuestro formulario para revisarla a nivel electrónica.";
+  } 
+
+  // 5. Daño por Líquidos (¡URGENCIA MÁXIMA!)
+  else if (texto.includes("agua") || texto.includes("cafe") || texto.includes("liquido") || texto.includes("derramo") || texto.includes("mojó") || texto.includes("jugo")) {
+    return "<strong>¡ALERTA URGENTE! ⚠️</strong><br><br><strong>Diagnóstico Preliminar:</strong> Cortocircuito por sulfatación líquida.<br><br><strong>Recomendación Inmediata:</strong> DESCONECTA la batería (si es posible) y NO la intentes encender por nada del mundo. Tráela inmediatamente al taller agendando una <em>'Limpieza profunda'</em> y <em>'Diagnóstico básico'</em>. ¡El tiempo es oro!";
+  }
+
+  // 6. Batería y Centro de Carga
+  else if (texto.includes("bateria") || texto.includes("carga") || texto.includes("cargador") || texto.includes("conecta")) {
+    return "<strong>Diagnóstico Preliminar:</strong> Vida útil de la celda de batería agotada o centro de carga desoldado.<br><br><strong>Recomendación:</strong> Agenda un <em>'Diagnóstico básico'</em> para medir el voltaje. Si es necesario, buscaremos el reemplazo exacto de tu batería o repararemos el puerto de carga.";
+  }
+
+  // 7. Periféricos (Teclado / Mouse / Pantalla rota)
+  else if (texto.includes("teclado") || texto.includes("tecla") || texto.includes("mouse") || texto.includes("touchpad") || texto.includes("pantalla rota") || texto.includes("display")) {
+    return "<strong>Diagnóstico Preliminar:</strong> Daño físico en hardware de entrada/salida.<br><br><strong>Recomendación:</strong> Realizamos reemplazos físicos. Agenda un <em>'Diagnóstico básico'</em> en el formulario y pon el modelo de tu equipo para cotizarte la refacción exacta (teclado o pantalla).";
+  }
+
+  // 8. Instalación de Software / Office
+  else if (texto.includes("office") || texto.includes("word") || texto.includes("excel") || texto.includes("autocad") || texto.includes("instalar") || texto.includes("programa")) {
+    return "<strong>Diagnóstico Preliminar:</strong> Solicitud de configuración de Software.<br><br><strong>Recomendación:</strong> Claro que sí. Tenemos el servicio de <em>'Instalación de programas'</em>. Cuéntanos qué software necesitas en los comentarios de tu cita y nosotros lo dejamos activado y listo para usar.";
+  }
+
+  // 9. Contraseñas olvidadas
+  else if (texto.includes("contraseña") || texto.includes("password") || texto.includes("clave") || texto.includes("bloqueada") || texto.includes("olvide")) {
+    return "<strong>Diagnóstico Preliminar:</strong> Bloqueo de sesión de usuario.<br><br><strong>Recomendación:</strong> Podemos botar la contraseña antigua mediante el servicio de <em>'Reinstalación / reparación del sistema'</em>, garantizando que recuperes el acceso sin perder los archivos que ya tienes guardados.";
+  }
+
+  // 10. Saludos y Agradecimientos
+  else if (texto.includes("gracias") || texto.includes("ok") || texto.includes("excelente") || texto.includes("perfecto") || texto.includes("hola") || texto.includes("buenas")) {
+    return "¡Hola! Soy la IA de Smart System. ¿En qué puedo ayudarte hoy? Dime qué le duele a tu computadora y te diré qué necesita.";
+  } 
+  
+  // 11. Respuesta por Defecto (Catch-All)
+  else {
+    return "Entiendo. Ese es un síntoma técnico muy específico.<br><br>Para darte una solución exacta y profesional, te sugiero agendar un servicio de <strong>'Diagnóstico básico'</strong> utilizando el formulario de contacto. Nuestros ingenieros revisarán el equipo a fondo en nuestro laboratorio.";
+  }
+}

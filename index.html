@@ -405,5 +405,54 @@
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
+  <div class="modal-login" id="modalRating" aria-hidden="true">
+    <div class="login-panel" style="max-width: 450px; text-align: center;">
+      <button class="cerrar-login" id="cerrarRating" type="button" aria-label="Cerrar">×</button>
+      
+      <div style="font-size: 40px; margin-bottom: 10px;">🎉</div>
+      <h3 style="color: var(--azul-principal); margin-bottom: 10px;">¡Tu equipo está listo!</h3>
+      <p style="color: #4c6879; font-size: 14px; margin-bottom: 20px;">Tu servicio ha concluido. Nos encantaría saber cómo fue tu experiencia con Smart System.</p>
+      
+      <div class="estrellas-container" id="estrellasRating" style="display: flex; justify-content: center; gap: 10px; font-size: 45px; cursor: pointer; color: #cbd5e1; margin-bottom: 15px;">
+        <span class="estrella" data-valor="1">★</span>
+        <span class="estrella" data-valor="2">★</span>
+        <span class="estrella" data-valor="3">★</span>
+        <span class="estrella" data-valor="4">★</span>
+        <span class="estrella" data-valor="5">★</span>
+      </div>
+      
+      <textarea id="feedbackText" rows="3" placeholder="Déjanos un comentario (Opcional)..." style="width: 100%; border-radius: 8px; border: 1px solid #cbd5e1; padding: 12px; font-family: inherit; resize: none;"></textarea>
+      
+      <button type="button" class="btn btn-principal" id="btnEnviarRating" style="width: 100%; margin-top: 20px;">Enviar Calificación</button>
+    </div>
+  </div>
+  <button id="btnAbrirIA" class="btn-ia-flotante" aria-label="Abrir Asistente IA">
+    <span style="font-size: 28px;">🤖</span>
+  </button>
+
+  <div class="chat-ia-container" id="chatIA" aria-hidden="true">
+    <div class="chat-ia-header">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 24px; background: white; border-radius: 50%; padding: 4px;">🤖</span>
+        <div>
+          <h4 style="color: white; margin: 0; font-size: 16px;">Triage Técnico IA</h4>
+          <span style="font-size: 11px; color: #aebfd1;">Smart System Assistant</span>
+        </div>
+      </div>
+      <button id="btnCerrarIA" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">&times;</button>
+    </div>
+    
+    <div class="chat-ia-body" id="chatIABody">
+      <div class="mensaje-ia ia">
+        ¡Hola! Soy la Inteligencia Artificial de Smart System. Actúo como tu diagnosticador previo. Cuéntame, ¿qué problema presenta tu equipo? <br><br><em>(Ej. "Mi PC está muy lenta", "Se calienta mucho", "No da video")</em>
+      </div>
+    </div>
+    
+    <div class="chat-ia-footer">
+      <input type="text" id="inputMensajeIA" placeholder="Describe tu problema aquí..." onkeypress="if(event.key === 'Enter') enviarMensajeIA()">
+      <button onclick="enviarMensajeIA()" class="btn-enviar-ia">➤</button>
+    </div>
+  </div>
+  
 </body>
 </html>
