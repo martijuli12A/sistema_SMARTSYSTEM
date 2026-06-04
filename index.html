@@ -247,7 +247,7 @@
           <input type="email" id="correo" placeholder="Ej. usuario@gmail.com" pattern="^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com|outlook\.com|yahoo\.com|huixquilucan\.tecnm\.mx)$" title="Por favor usa un correo válido" required>
 
           <label for="telefono">Teléfono (WhatsApp)</label>
-          <input type="tel" id="telefono" placeholder="10 dígitos (Ej. 5512345678)" pattern="[0-9]{10}" title="Debe contener exactamente 10 números" maxlength="10" required>
+          <input type="tel" id="telefono" placeholder="10 dígitos" pattern="[0-9]{10}" title="Debe contener exactamente 10 números" maxlength="10" required>
 
           <label>Servicios solicitados (Puedes elegir varios)</label>
           <div class="checkbox-group" id="grupoServicios">
@@ -297,7 +297,7 @@
     </div>
   </section>
 
-<footer class="footer">
+  <footer class="footer">
     <div class="contenedor footer-grid">
       <div class="footer-marca">
         <h3 style="font-family: 'Space Grotesk', sans-serif;"><span class="azul">SMART</span> <span class="verde">SYSTEM</span></h3>
@@ -402,9 +402,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="script.js"></script>
+  <!-- MODAL DE SATISFACCIÓN (NPS) -->
   <div class="modal-login" id="modalRating" aria-hidden="true">
     <div class="login-panel" style="max-width: 450px; text-align: center;">
       <button class="cerrar-login" id="cerrarRating" type="button" aria-label="Cerrar">×</button>
@@ -426,25 +424,38 @@
       <button type="button" class="btn btn-principal" id="btnEnviarRating" style="width: 100%; margin-top: 20px;">Enviar Calificación</button>
     </div>
   </div>
-  <button id="btnAbrirIA" class="btn-ia-flotante" aria-label="Abrir Asistente IA">
-    <span style="font-size: 28px;">🤖</span>
+
+  <!-- ==========================================
+       MÓDULO DE INTELIGENCIA ARTIFICIAL (TRIAGE)
+  =========================================== -->
+  
+  <!-- Botón Flotante Personalizado Smart System (Forzado con onclick) -->
+  <button id="btnAbrirIA" class="btn-ia-flotante" aria-label="Abrir Asistente IA" onclick="document.getElementById('chatIA').classList.add('activo')" style="background: white; border: 2px solid var(--azul-principal);">
+    <span style="font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 800;">
+      <span style="color: var(--azul-principal);">I</span><span style="color: var(--verde-principal);">A</span>
+    </span>
   </button>
 
+  <!-- Ventana del Chat -->
   <div class="chat-ia-container" id="chatIA" aria-hidden="true">
     <div class="chat-ia-header">
       <div style="display: flex; align-items: center; gap: 10px;">
-        <span style="font-size: 24px; background: white; border-radius: 50%; padding: 4px;">🤖</span>
+        <!-- Icono IA en la cabecera del chat -->
+        <div style="background: white; border-radius: 50%; width: 36px; height: 36px; display: flex; justify-content: center; align-items: center; font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 16px;">
+          <span style="color: var(--azul-principal);">I</span><span style="color: var(--verde-principal);">A</span>
+        </div>
         <div>
-          <h4 style="color: white; margin: 0; font-size: 16px;">Triage Técnico IA</h4>
-          <span style="font-size: 11px; color: #aebfd1;">Smart System Assistant</span>
+          <h4 style="color: white; margin: 0; font-size: 16px;">Triage Técnico</h4>
+          <span style="font-size: 11px; color: #aebfd1;">Smart System</span>
         </div>
       </div>
-      <button id="btnCerrarIA" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">&times;</button>
+      <!-- Botón de cerrar forzado con onclick -->
+      <button id="btnCerrarIA" onclick="document.getElementById('chatIA').classList.remove('activo')" style="background:none; border:none; color:white; font-size:28px; cursor:pointer;">&times;</button>
     </div>
     
     <div class="chat-ia-body" id="chatIABody">
       <div class="mensaje-ia ia">
-        ¡Hola! Soy la Inteligencia Artificial de Smart System. Actúo como tu diagnosticador previo. Cuéntame, ¿qué problema presenta tu equipo? <br><br><em>(Ej. "Mi PC está muy lenta", "Se calienta mucho", "No da video")</em>
+        ¡Hola! Soy la Inteligencia Artificial de Smart System. Actúo como tu diagnosticador previo. Cuéntame, ¿qué problema presenta tu equipo? <br><br><em>(Ej. "Mi PC está muy lenta", "Se le cayó agua", "No enciende")</em>
       </div>
     </div>
     
@@ -453,6 +464,10 @@
       <button onclick="enviarMensajeIA()" class="btn-enviar-ia">➤</button>
     </div>
   </div>
-  
+
+  <!-- LOS SCRIPTS SIEMPRE VAN AL FINAL DE TODO -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
 </body>
 </html>
