@@ -328,7 +328,7 @@
       </div>
     </div>
   </footer>
-  
+
   <div class="modal-login" id="modalPoliticas" aria-hidden="true">
     <div class="login-panel" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
       <button class="cerrar-login" id="cerrarPoliticas" type="button" aria-label="Cerrar">×</button>
@@ -373,7 +373,7 @@
         <input id="telefonoRegistro" type="tel" placeholder="10 dígitos" required>
 
         <label for="passwordRegistro">Contraseña</label>
-        <input id="passwordRegistro" type="password" placeholder="Crea una contraseña segura" required>
+        <input id="passwordRegistro" type="password" placeholder="Ej. Smart2026 (Mayúscula y números)" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" title="La contraseña debe tener al menos 6 caracteres, incluir una mayúscula, una minúscula y un número." required>
 
         <button type="submit" class="btn btn-principal">Crear cuenta</button>
       </form>
