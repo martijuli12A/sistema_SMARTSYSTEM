@@ -855,36 +855,44 @@ ul{
   box-shadow: 0 12px 25px rgba(12, 183, 242, 0.6);
 }
 
+/* Contenedor principal elástico */
 .chat-ia-container {
   position: fixed;
-  bottom: 110px;
-  right: 30px;
+  bottom: 100px;
+  right: 20px; /* Un poco más pegado al borde para pantallas pequeñas */
   width: 350px;
+  max-width: 90vw; /* Nunca será más ancho que el 90% de la pantalla */
   height: 500px;
+  max-height: 70vh; /* NUNCA rebasará el 70% de la altura de la pantalla */
   background: white;
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
-  z-index: 1000;
+  z-index: 9999; /* Lo forzamos a estar por encima de todo */
   overflow: hidden;
   transition: all 0.3s ease;
   opacity: 0;
   pointer-events: none;
   transform: translateY(20px);
 }
+
 .chat-ia-container.activo {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
 }
 
+/* Cabecera rígida para proteger el botón */
 .chat-ia-header {
   background: var(--azul-oscuro);
-  padding: 15px 20px;
+  padding: 12px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0; /* Evita que la cabecera se aplaste */
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
 
 .chat-ia-body {
