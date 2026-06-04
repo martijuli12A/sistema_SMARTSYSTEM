@@ -552,61 +552,87 @@ function scrollChatIA() {
 }
 
 // ------------------------------------------
-// MOTOR DE REGLAS (EL "CEREBRO" EXPANDIDO DE LA IA)
+// MOTOR DE REGLAS AVANZADO (TRIAGE INGENIERIL)
 // ------------------------------------------
 function procesarDiagnosticoIA(texto) {
-  // 1. Lentitud y Rendimiento
-  if (texto.includes("lenta") || texto.includes("traba") || texto.includes("congela") || texto.includes("tarda") || texto.includes("lag")) {
-    return "<strong>Diagnóstico Preliminar:</strong> Posible cuello de botella en almacenamiento o memoria RAM saturada.<br><br><strong>Recomendación:</strong> Te sugiero el servicio de <em>'Instalación de SSD'</em> o <em>'Ampliación de RAM'</em>. Si ya cuentas con SSD, una <em>'Optimización de Windows'</em> lo solucionará. ¿Deseas agendar tu cita abajo?";
+  const msj = texto.toLowerCase();
+
+  // 1. Rendimiento para Desarrollo / Virtualización / Cuellos de botella
+  if (msj.includes("docker") || msj.includes("maquinas virtuales") || msj.includes("wsl") || msj.includes("compilando") || msj.includes("android studio") || msj.includes("swap") || msj.includes("cuello de botella") || msj.includes("disco al 100")) {
+    return "<strong>Diagnóstico Técnico:</strong> Saturación de paginación (Swap) y cuello de botella en I/O o insuficiencia de memoria para virtualización (Hyper-V/VT-x).<br><br><strong>Recomendación:</strong> Los IDEs y contenedores exigen alto rendimiento. Te sugiero una <em>'Instalación / ampliación de RAM'</em> (mínimo a 16GB/32GB) o una <em>'Migración / clonación a SSD'</em> NVMe para compilar más rápido. Elige el servicio en la sección de citas.";
   } 
   
-  // 2. Sobrecalentamiento (Crítico)
-  else if (texto.includes("calienta") || texto.includes("apaga") || texto.includes("ruido") || texto.includes("ventilador") || texto.includes("quema") || texto.includes("herviendo")) {
-    return "<strong>Diagnóstico Preliminar:</strong> Problema de disipación térmica. Peligro inminente de daño en el procesador (Thermal Throttling).<br><br><strong>Recomendación:</strong> Es vital realizar una <em>'Limpieza interna + cambio de pasta térmica'</em>. Por favor, deja de usar el equipo en tareas pesadas y agenda el servicio.";
+  // 2. Control Térmico y Thermal Throttling
+  else if (msj.includes("thermal throttling") || msj.includes("tjmax") || msj.includes("undervolt") || msj.includes("rpm") || msj.includes("sobrecalentamiento") || msj.includes("pasta termica") || msj.includes("disipacion")) {
+    return "<strong>Diagnóstico Técnico:</strong> Degradación del coeficiente de transferencia de calor. El CPU/GPU está alcanzando su TjMax, provocando Thermal Throttling para evitar daños en el silicio.<br><br><strong>Recomendación:</strong> Requiere mantenimiento preventivo urgente. Agenda una <em>'Limpieza interna + cambio de pasta térmica'</em>. Si es un equipo de alto rendimiento, elige el <em>'Mantenimiento completo de PC gamer'</em>.";
   } 
   
-  // 3. Fallas de Sistema Operativo y Virus
-  else if (texto.includes("pantalla azul") || texto.includes("reinicia") || texto.includes("error") || texto.includes("virus") || texto.includes("hacker") || texto.includes("publicidad") || texto.includes("lento el internet")) {
-    return "<strong>Diagnóstico Preliminar:</strong> Falla crítica del sistema operativo, corrupción de archivos o infección de malware/virus.<br><br><strong>Recomendación:</strong> Necesitamos aplicar una <em>'Reparación del Sistema'</em>. Si la infección es grave, lo ideal es un <em>'Formateo + respaldo de archivos'</em> para dejarla como nueva sin perder tu información.";
+  // 3. Fallas Críticas a nivel Kernel / OS
+  else if (msj.includes("bsod") || msj.includes("kernel panic") || msj.includes("boot loop") || msj.includes("mbr") || msj.includes("gpt") || msj.includes("efi") || msj.includes("uefi") || msj.includes("pantalla azul") || msj.includes("pantallazo")) {
+    return "<strong>Diagnóstico Técnico:</strong> Corrupción en el sector de arranque (Bootloader), conflictos de drivers a nivel Ring 0 (Kernel) o fallas de integridad en el registro del SO.<br><br><strong>Recomendación:</strong> Podemos intentar una <em>'Reinstalación / reparación del sistema'</em>. Si la estructura de particiones está muy dañada, procederemos con un <em>'Formateo + respaldo de archivos'</em>.";
   } 
   
-  // 4. Hardware Crítico (No da video / No enciende)
-  else if (texto.includes("prende") || texto.includes("enciende") || texto.includes("video") || texto.includes("pantalla negra") || texto.includes("pitidos")) {
-    return "<strong>Diagnóstico Preliminar:</strong> Falla a nivel de hardware (Puede ser la fuente de poder, un módulo RAM dañado o falla en la Tarjeta Madre).<br><br><strong>Recomendación:</strong> Este problema requiere revisión física con multímetro. Por favor agenda un <em>'Diagnóstico básico'</em> en nuestro formulario para revisarla a nivel electrónica.";
+  // 4. Integridad de Almacenamiento (S.M.A.R.T.)
+  else if (msj.includes("s.m.a.r.t") || msj.includes("sectores dañados") || msj.includes("raw") || msj.includes("chkdsk") || msj.includes("crystaldiskinfo") || msj.includes("hdd") || msj.includes("ruido disco")) {
+    return "<strong>Diagnóstico Técnico:</strong> Alerta de fallo inminente en hardware de almacenamiento mecánico (Degradación de platos/cabezal) o desgaste de celdas NAND en estado sólido.<br><br><strong>Recomendación:</strong> ¡Protege tu información! Agenda una <em>'Migración / clonación a SSD'</em> inmediata para rescatar el sistema operativo y una <em>'Instalación de SSD'</em> nuevo.";
   } 
 
-  // 5. Daño por Líquidos (¡URGENCIA MÁXIMA!)
-  else if (texto.includes("agua") || texto.includes("cafe") || texto.includes("liquido") || texto.includes("derramo") || texto.includes("mojó") || texto.includes("jugo")) {
-    return "<strong>¡ALERTA URGENTE! ⚠️</strong><br><br><strong>Diagnóstico Preliminar:</strong> Cortocircuito por sulfatación líquida.<br><br><strong>Recomendación Inmediata:</strong> DESCONECTA la batería (si es posible) y NO la intentes encender por nada del mundo. Tráela inmediatamente al taller agendando una <em>'Limpieza profunda'</em> y <em>'Diagnóstico básico'</em>. ¡El tiempo es oro!";
-  }
-
-  // 6. Batería y Centro de Carga
-  else if (texto.includes("bateria") || texto.includes("carga") || texto.includes("cargador") || texto.includes("conecta")) {
-    return "<strong>Diagnóstico Preliminar:</strong> Vida útil de la celda de batería agotada o centro de carga desoldado.<br><br><strong>Recomendación:</strong> Agenda un <em>'Diagnóstico básico'</em> para medir el voltaje. Si es necesario, buscaremos el reemplazo exacto de tu batería o repararemos el puerto de carga.";
-  }
-
-  // 7. Periféricos (Teclado / Mouse / Pantalla rota)
-  else if (texto.includes("teclado") || texto.includes("tecla") || texto.includes("mouse") || texto.includes("touchpad") || texto.includes("pantalla rota") || texto.includes("display")) {
-    return "<strong>Diagnóstico Preliminar:</strong> Daño físico en hardware de entrada/salida.<br><br><strong>Recomendación:</strong> Realizamos reemplazos físicos. Agenda un <em>'Diagnóstico básico'</em> en el formulario y pon el modelo de tu equipo para cotizarte la refacción exacta (teclado o pantalla).";
-  }
-
-  // 8. Instalación de Software / Office
-  else if (texto.includes("office") || texto.includes("word") || texto.includes("excel") || texto.includes("autocad") || texto.includes("instalar") || texto.includes("programa")) {
-    return "<strong>Diagnóstico Preliminar:</strong> Solicitud de configuración de Software.<br><br><strong>Recomendación:</strong> Claro que sí. Tenemos el servicio de <em>'Instalación de programas'</em>. Cuéntanos qué software necesitas en los comentarios de tu cita y nosotros lo dejamos activado y listo para usar.";
-  }
-
-  // 9. Contraseñas olvidadas
-  else if (texto.includes("contraseña") || texto.includes("password") || texto.includes("clave") || texto.includes("bloqueada") || texto.includes("olvide")) {
-    return "<strong>Diagnóstico Preliminar:</strong> Bloqueo de sesión de usuario.<br><br><strong>Recomendación:</strong> Podemos botar la contraseña antigua mediante el servicio de <em>'Reinstalación / reparación del sistema'</em>, garantizando que recuperes el acceso sin perder los archivos que ya tienes guardados.";
-  }
-
-  // 10. Saludos y Agradecimientos
-  else if (texto.includes("gracias") || texto.includes("ok") || texto.includes("excelente") || texto.includes("perfecto") || texto.includes("hola") || texto.includes("buenas")) {
-    return "¡Hola! Soy la IA de Smart System. ¿En qué puedo ayudarte hoy? Dime qué le duele a tu computadora y te diré qué necesita.";
+  // 5. Fallas a nivel Hardware / POST
+  else if (msj.includes("post") || msj.includes("beep") || msj.includes("pitidos") || msj.includes("led dram") || msj.includes("led vga") || msj.includes("no da video") || msj.includes("corto") || msj.includes("motherboard") || msj.includes("bios")) {
+    return "<strong>Diagnóstico Técnico:</strong> Falla en la secuencia POST (Power-On Self-Test). Posible corto en fases de poder (VRM), RAM desoldada o GPU sin inicializar.<br><br><strong>Recomendación:</strong> Este equipo no debe forzarse. Requiere medición de componentes y revisión de voltajes. Agenda un <em>'Diagnóstico básico'</em> en nuestro laboratorio.";
   } 
+
+  // 6. Ciberseguridad / Malware Avanzado
+  else if (msj.includes("ransomware") || msj.includes("rootkit") || msj.includes("troyano") || msj.includes("minero") || msj.includes("cpu al 100") || msj.includes("hacker") || msj.includes("virus")) {
+    return "<strong>Diagnóstico Técnico:</strong> Infección de malware severa (posible cryptojacking o ejecución de procesos no autorizados en segundo plano).<br><br><strong>Recomendación:</strong> Para garantizar la seguridad de tus datos y credenciales, la mejor práctica es aislar el equipo y realizar un <em>'Formateo + respaldo de archivos'</em> con escaneo profundo.";
+  }
+
+  // 7. Urgencia por Cortocircuito / Líquidos
+  else if (msj.includes("agua") || msj.includes("liquido") || msj.includes("cafe") || msj.includes("derrame") || msj.includes("sulfatacion")) {
+    return "<strong>¡ALERTA CRÍTICA DE HARDWARE! ⚠️</strong><br><br><strong>Diagnóstico:</strong> Riesgo de cortocircuito y sulfatación de componentes SMD en la placa base.<br><br><strong>Acción inmediata:</strong> Desconecta la corriente. No enciendas el equipo. Agenda un <em>'Diagnóstico básico'</em> y <em>'Limpieza profunda'</em> urgente con baño isopropílico.";
+  }
+
+  // 8. Requerimientos de Software y Optimización General
+  else if (msj.includes("lenta") || msj.includes("traba") || msj.includes("optimizar") || msj.includes("programas") || msj.includes("office") || msj.includes("paqueteria")) {
+    return "<strong>Diagnóstico Técnico:</strong> Sistema degradado por acumulación de temporales o requerimiento de despliegue de software específico.<br><br><strong>Recomendación:</strong> Podemos aplicar una <em>'Optimización de Windows'</em> (desactivación de telemetría y servicios innecesarios) o realizar la <em>'Instalación de programas'</em> que tu flujo de trabajo necesite.";
+  }
+
+  // 9. Saludos / Interacción Básica
+  else if (msj.includes("hola") || msj.includes("buenas") || msj.includes("que tal") || msj.includes("gracias") || msj.includes("excelente")) {
+    return "¡Hola! Soy el Triage Técnico automatizado de Smart System. Dime los síntomas técnicos de tu equipo (Ej. 'Tengo un error de Kernel Panic', 'Mi CPU hace thermal throttling', 'Alerta SMART') y te indicaré el procedimiento recomendado.";
+  } 
+
+  else if (msj.includes("fps") || msj.includes("lag") || msj.includes("tirones") || msj.includes("stuttering") || msj.includes("grafica") || msj.includes("gpu") || msj.includes("juegos") || msj.includes("texturas") || msj.includes("red dead") || msj.includes("world war") || msj.includes("darksiders")) {
+    return "<strong>Diagnóstico Técnico:</strong> Cuello de botella en el renderizado (GPU/CPU) o falta de memoria VRAM/RAM. Si experimentas caídas de FPS severas o texturas que tardan en cargar en títulos exigentes de mundo abierto o de hordas masivas, tu hardware está limitando el rendimiento.<br><br><strong>Recomendación:</strong> Un <em>'Mantenimiento completo de PC gamer'</em> estabilizará las frecuencias de la gráfica, y una <em>'Instalación / ampliación de RAM'</em> eliminará los tirones. ¡Agenda tu cita para volver a jugar en ultra!";
+  }
+
+  else if (msj.includes("calienta") || msj.includes("apaga") || msj.includes("ruido") || msj.includes("ventilador") || msj.includes("thermal throttling") || msj.includes("tjmax") || msj.includes("quema") || msj.includes("herviendo")) {
+    return "<strong>Diagnóstico Técnico:</strong> Degradación del coeficiente de transferencia de calor. El procesador está alcanzando su límite térmico, provocando cortes por seguridad.<br><br><strong>Recomendación:</strong> Requiere mantenimiento preventivo urgente para no quemar la placa base. Agenda una <em>'Limpieza interna + cambio de pasta térmica'</em>. Si es un equipo robusto, elige el <em>'Mantenimiento completo de PC gamer'</em>.";
+  }
+
+  else if (msj.includes("pantalla azul") || msj.includes("reinicia") || msj.includes("bsod") || msj.includes("kernel panic") || msj.includes("virus") || msj.includes("ransomware") || msj.includes("troyano") || msj.includes("hacker")) {
+    return "<strong>Diagnóstico Técnico:</strong> Corrupción grave en el sector de arranque (Bootloader), conflictos a nivel Kernel o infección de malware severa.<br><br><strong>Recomendación:</strong> Para garantizar la estabilidad y la seguridad de tus datos, procede a aislar el equipo y realizar un <em>'Formateo + respaldo de archivos'</em> con instalación limpia del sistema.";
+  }
+
+  else if (msj.includes("prende") || msj.includes("enciende") || msj.includes("video") || msj.includes("post") || msj.includes("pitidos") || msj.includes("led vga") || msj.includes("pantalla negra") || msj.includes("corto")) {
+    return "<strong>Diagnóstico Técnico:</strong> Falla en la secuencia POST (Power-On Self-Test). Posible corto en placa, RAM desoldada, o fuente de poder averiada.<br><br><strong>Recomendación:</strong> Este equipo requiere revisión física con multímetro. No intentes forzar el encendido. Por favor, agenda un <em>'Diagnóstico básico'</em> en nuestro laboratorio.";
+  }
+
+  else if (msj.includes("bateria") || msj.includes("carga") || msj.includes("teclado") || msj.includes("pantalla rota") || msj.includes("display") || msj.includes("touchpad")) {
+    return "<strong>Diagnóstico Técnico:</strong> Desgaste de celdas de energía o daño físico en periféricos de entrada/salida.<br><br><strong>Recomendación:</strong> Realizamos reemplazos directos de componentes. Agenda un <em>'Diagnóstico básico'</em> indicando el modelo exacto de tu equipo para cotizarte la refacción (pantalla, teclado o batería).";
+  }
+
+  else if (msj.includes("office") || msj.includes("instalar") || msj.includes("programa") || msj.includes("overcooked") || msj.includes("contraseña") || msj.includes("bloqueada")) {
+    return "<strong>Diagnóstico Técnico:</strong> Requerimiento de despliegue de software, configuración de juegos ligeros o desbloqueo de cuenta local.<br><br><strong>Recomendación:</strong> Podemos aplicar una <em>'Instalación de programas'</em> para dejar tus herramientas listas, o una <em>'Reinstalación / reparación del sistema'</em> para botar contraseñas sin afectar tu información.";
+  }
   
-  // 11. Respuesta por Defecto (Catch-All)
+  // 10. Fallback (Respuestas que no coinciden)
   else {
-    return "Entiendo. Ese es un síntoma técnico muy específico.<br><br>Para darte una solución exacta y profesional, te sugiero agendar un servicio de <strong>'Diagnóstico básico'</strong> utilizando el formulario de contacto. Nuestros ingenieros revisarán el equipo a fondo en nuestro laboratorio.";
+    return "Interesante. Los parámetros que mencionas requieren un análisis más profundo a nivel de logs de sistema y revisión de hardware.<br><br>Te recomiendo agendar un <strong>'Diagnóstico básico'</strong> en el formulario inferior para que nuestros ingenieros levanten un reporte detallado en el laboratorio.";
   }
+
+
+
+
+  
 }
