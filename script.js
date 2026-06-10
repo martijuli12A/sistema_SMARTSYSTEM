@@ -636,3 +636,73 @@ function procesarDiagnosticoIA(texto) {
 
   
 }
+
+
+// ==========================================
+// FLUJO DE RECUPERACIÓN DE CONTRASEÑA
+// ==========================================
+const linkOlvidoContrasena = document.getElementById("linkOlvidoContrasena");
+
+if (linkOlvidoContrasena) {
+  linkOlvidoContrasena.addEventListener("click", async (e) => {
+    e.preventDefault(); // Evita que la página recargue
+    
+    // Tomamos el correo que el usuario haya escrito en la casilla
+    const correo = document.getElementById("usuarioLogin").value.trim();
+
+    if (!correo) {
+      alert("Para recuperar tu contraseña, primero escribe tu correo electrónico en la casilla de arriba y luego presiona este botón.");
+      return;
+    }
+
+    const confirmar = confirm(`¿Deseas enviar un enlace de recuperación seguro al correo: ${correo}?`);
+    if (!confirmar) return;
+
+    // Cambiamos el texto visualmente mientras carga
+    linkOlvidoContrasena.textContent = "Enviando enlace...";
+    linkOlvidoContrasena.style.pointerEvents = "none";
+
+    // Petición a Supabase
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(correo, {
+      redirectTo: window.location.origin + '/index.html'
+    });
+
+    // Restauramos el botón
+    linkOlvidoContrasena.textContent = "¿Olvidaste tu contraseña?";
+    linkOlvidoContrasena.style.pointerEvents = "auto";
+
+    if (error) {
+      alert("Error al procesar la solicitud: " + error.message);
+    } else {
+      alert("¡Enlace de recuperación enviado! Revisa tu bandeja de entrada o la carpeta de Spam.");
+    }
+  });
+}
+
+// ==========================================
+// DETECCIÓN DEL ENLACE DE RECUPERACIÓN
+// ==========================================
+// Esto está monitoreando constantemente la sesión. Si detecta que la URL 
+// tiene un token de recuperación (porque el usuario viene desde su correo), lanza este código:
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    // Damos medio segundo para que la página termine de renderizar
+    setTimeout(async () => {
+      const nuevaContrasena = prompt("🔒 RECUPERACIÓN DE ACCESO\n\nIngresa tu NUEVA contraseña (mínimo 6 caracteres, incluyendo letras y números):");
+      
+      if (nuevaContrasena && nuevaContrasena.length >= 6) {
+        // Le enviamos la nueva contraseña a la base de datos
+        const { error } = await supabaseClient.auth.updateUser({ password: nuevaContrasena });
+        
+        if (error) {
+          alert("Hubo un error al guardar tu nueva contraseña: " + error.message);
+        } else {
+          alert("✅ ¡Éxito! Tu contraseña ha sido actualizada. La página se recargará para que inicies sesión normalmente.");
+          window.location.reload();
+        }
+      } else {
+        alert("❌ Operación cancelada. La contraseña ingresada era muy corta o inválida. Tendrás que volver a solicitar el correo de recuperación.");
+      }
+    }, 500);
+  }
+});
